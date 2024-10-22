@@ -1,0 +1,64 @@
+.container {
+  width: 1024px;
+  margin: 0 auto;
+  padding: 0 18px;
+  max-width: 100%;
+}
+
+.my-account {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.welcome {
+  color: var(--black-100);
+}
+
+.logout-button {
+  background-color: transparent;
+  font-weight: 600;
+  color: var(--green-100);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  color: var(--green-200);
+}
+
+.alert-message {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.16);
+  padding: 10px;
+  top: 12px;
+  position: fixed;
+  font-size: 14px;
+  color: var(--black-100);
+  font-weight: 700;
+  border-radius: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--white-100);
+  display: none;
+}
+
+.background {
+  position: absolute;
+  bottom: 0;
+  z-index: -99;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* DOM */
+.visible {
+  display: block;
+  pointer-events: all;
+}
+
+@media screen and (max-width: 800px) {
+  .welcome {
+    font-size: 14px;
+  }
+}

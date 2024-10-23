@@ -1,10 +1,10 @@
-import { api, showAlert, redirectToPage } from "../utils/utils";
+import { api, showToast, redirectToPage } from "../utils/utils";
 import {
-  validateInputs,
+  validateFields,
   confirmPasswordMatch,
   validatePasswordLength,
-  addFieldError,
   removeFieldsError,
+  showDataError,
 } from "../utils/formValidation";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
@@ -18,48 +18,46 @@ const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
 
 let token: string;
 
-const getUrlToken = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlToken = urlParams.get("token");
+// const getUrlToken = () => {
+//   const urlParams = new URLSearchParams(window.location.search);
+//   const urlToken = urlParams.get("token");
 
-  if (urlToken) {
-    token = urlToken;
-  } else {
-    window.location.href = `./${PAGES.forgotPassword}.html`;
-  }
-};
+//   if (urlToken) {
+//     token = urlToken;
+//   } else {
+//     window.location.href = `./${PAGES.forgotPassword}.html`;
+//   }
+// };
 
-getUrlToken();
+// getUrlToken();
 
 passwordInputs.forEach((passwordInput, i) => {
   eyeIcons[i].addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
   eyeOffIcons[i].addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
 });
 
-const handleFormSubmit = (e: Event) => {
-  e.preventDefault();
+const handleFormSubmit = (event: Event) => {
+  event.preventDefault();
 
   const labels = document.querySelectorAll<HTMLInputElement>(SELECTORS.label);
   const inputs = document.querySelectorAll<HTMLInputElement>(SELECTORS.input);
   const passwordInput = document.querySelector(SELECTORS.passwordInput) as HTMLInputElement;
   const confirmPasswordInput = document.querySelector(SELECTORS.confirmPasswordInput) as HTMLInputElement;
-  const alertMessage = document.querySelector(SELECTORS.alertMessage) as HTMLElement;
-  const errorMessages = document.querySelectorAll(SELECTORS.errorMessage) as NodeList;
+  const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
+  const fieldsError = document.querySelectorAll(SELECTORS.fieldError) as NodeList;
+  const dataError = document.querySelector(SELECTORS.dataError) as HTMLInputElement;
 
   const passwordValue = passwordInput.value.trim();
   const passwordLabel = labels[0] as HTMLElement;
   const confirmPasswordValue = confirmPasswordInput.value.trim();
   const confirmPasswordLabel = labels[1] as HTMLElement;
-  const globalError = errorMessages[2] as HTMLElement;
 
-  removeFieldsError(errorMessages, inputs, labels, globalError);
+  removeFieldsError(fieldsError, inputs, labels);
 
-  if (validateInputs(labels, inputs, errorMessages)) return;
-  if (
-    confirmPasswordMatch(passwordValue, confirmPasswordValue, globalError, confirmPasswordInput, confirmPasswordLabel)
-  )
+  if (validateFields(labels, inputs, fieldsError)) return;
+  if (confirmPasswordMatch(passwordValue, confirmPasswordValue, dataError, confirmPasswordInput, confirmPasswordLabel))
     return;
-  if (validatePasswordLength(passwordValue, globalError, passwordInput, passwordLabel)) return;
+  if (validatePasswordLength(passwordValue, dataError, passwordInput, passwordLabel)) return;
 
   const dataFetching = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
@@ -80,7 +78,7 @@ const handleFormSubmit = (e: Event) => {
 
       submitButton.classList.remove(CSS_CLASSES.loading);
 
-      showAlert(alertMessage, res.data.message);
+      showToast(toastNotif, res.data.message);
 
       passwordInput.value = "";
       confirmPasswordInput.value = "";
@@ -97,7 +95,7 @@ const handleFormSubmit = (e: Event) => {
 
         const errorMessage: string = err.response.data.error;
 
-        addFieldError(globalError, passwordInput, errorMessage, true, passwordLabel, true);
+        showDataError(dataError, passwordInput, passwordLabel, errorMessage);
       }
     }
   };

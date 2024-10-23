@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crear cuenta</title>
     <link rel="stylesheet" href="./css/global.css" />
-    <link rel="stylesheet" href="./css/auth.css" />
+    <link rel="stylesheet" href="./css/pages/register.css" />
   </head>
 
   <body>
@@ -17,13 +17,13 @@
             <div class="field">
               <label for="name" class="label" id="name-label">Nombre</label>
               <input name="name" type="text" class="input" id="name-input" />
-              <div class="error-message"></div>
+              <div class="field-error">Este campo es obligatorio.</div>
             </div>
 
             <div class="field">
-              <label for="email" class="label" id="email-label">Correo</label>
+              <label for="email" class="label" id="email-label">Correo electronico</label>
               <input name="email" type="text" class="input" id="email-input" />
-              <div class="error-message"></div>
+              <div class="field-error">Este campo es obligatorio.</div>
             </div>
 
             <div class="field">
@@ -57,23 +57,22 @@
                   />
                 </svg>
               </div>
-              <div class="error-message"></div>
+              <div class="field-error">Este campo es obligatorio.</div>
             </div>
           </div>
 
-          <div class="error-message" style="margin-top: 12px"></div>
+          <div class="data-error"></div>
 
           <button type="submit" class="submit-button">Crear cuenta</button>
         </form>
         <div class="already-account">
           ¿Ya tienes una cuenta?
-          <a class="login-link" href="./login.html">Iniciar Sesion</a>
+          <a class="login-page-link" href="./login.html">Iniciar Sesion</a>
         </div>
       </div>
     </div>
 
-    <div class="alert-message"></div>
-    <img src="./assets/images/vector2.png" alt="" class="background" />
+    <div class="toast-notif"></div>
 
     <script type="module" src="./js/register.bundle.js"></script>
   </body>

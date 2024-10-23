@@ -1,4 +1,4 @@
-import { api, showAlert, redirectToPage, verifyAccessToken } from "../utils/utils";
+import { api, showToast, redirectToPage, verifyAccessToken } from "../utils/utils";
 import { PAGES, SELECTORS } from "../constants";
 
 import { AxiosError } from "axios";
@@ -19,18 +19,17 @@ fetchData();
 
 const handleLogoutButton = () => {
   const logout = async () => {
-    const alertMessage = document.querySelector(SELECTORS.alertMessage) as HTMLElement;
+    const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 
     try {
       const res = await api.post("/auth/logout");
 
-      showAlert(alertMessage, res.data.message);
+      showToast(toastNotif, res.data.message);
 
       redirectToPage(PAGES.login);
     } catch (err) {
       if (err instanceof AxiosError) {
         // console.error(err);
-    
         // window.location.href = `./${PAGES.login}.html`;
       }
     }

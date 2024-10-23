@@ -1,10 +1,10 @@
-import { api, showAlert, redirectToPage, verifyAccessToken } from "../utils/utils";
+import { api, showToast, redirectToPage, verifyAccessToken } from "../utils/utils";
 import {
   validateEmail,
-  validateInputs,
-  addFieldError,
+  validateFields,
   removeFieldsError,
   validatePasswordLength,
+  showDataError,
 } from "../utils/formValidation";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
@@ -26,24 +26,25 @@ const handleFormSubmit = (e: Event) => {
   const nameInput = document.querySelector(SELECTORS.nameInput) as HTMLInputElement;
   const emailInput = document.querySelector(SELECTORS.emailInput) as HTMLInputElement;
   const passwordInput = document.querySelector(SELECTORS.passwordInput) as HTMLInputElement;
-  const errorMessages = document.querySelectorAll(SELECTORS.errorMessage) as NodeList;
+  const fieldsError = document.querySelectorAll(SELECTORS.fieldError) as NodeList;
+  const dataError = document.querySelector(SELECTORS.dataError) as HTMLInputElement;
 
   const nameValue = nameInput.value.trim();
   const emailValue = emailInput.value.trim();
   const emailLabel = labels[1] as HTMLElement;
   const passwordValue = passwordInput.value.trim();
   const passwordLabel = labels[2] as HTMLElement;
-  const globalError = errorMessages[3] as HTMLElement;
+  // const globalError = errorMessages[3] as HTMLElement;
 
-  removeFieldsError(errorMessages, inputs, labels, globalError);
+  removeFieldsError(fieldsError, inputs, labels);
 
-  if (validateInputs(labels, inputs, errorMessages)) return;
-  if (validateEmail(emailValue, globalError, emailInput, emailLabel)) return;
-  if (validatePasswordLength(passwordValue, globalError, passwordInput, passwordLabel)) return;
+  if (validateFields(labels, inputs, fieldsError)) return;
+  if (validateEmail(emailValue, dataError, emailInput, emailLabel)) return;
+  if (validatePasswordLength(passwordValue, dataError, passwordInput, passwordLabel)) return;
 
   const fetchData = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
-    const alertMessage = document.querySelector(SELECTORS.alertMessage) as HTMLElement;
+    const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 
     submitButton.classList.add(CSS_CLASSES.loading);
 
@@ -58,12 +59,10 @@ const handleFormSubmit = (e: Event) => {
 
       submitButton.classList.remove(CSS_CLASSES.loading);
 
-      showAlert(alertMessage, res.data.message);
+      showToast(toastNotif, res.data.message);
 
       redirectToPage(PAGES.myAccount);
     } catch (err) {
-
-
       if (err instanceof AxiosError) {
         submitButton.classList.remove(CSS_CLASSES.loading);
 
@@ -72,9 +71,8 @@ const handleFormSubmit = (e: Event) => {
         }
 
         const errorMessage: string = err.response.data.error;
-        addFieldError(globalError, emailInput, errorMessage, true, emailLabel, true);
+        showDataError(dataError, emailInput, emailLabel, errorMessage);
         // console.error(err);
-    
       }
     }
   };
@@ -85,4 +83,3 @@ const handleFormSubmit = (e: Event) => {
 eyeIcon.addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcon, eyeOffIcon));
 eyeOffIcon.addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcon, eyeOffIcon));
 form.addEventListener("submit", handleFormSubmit);
-

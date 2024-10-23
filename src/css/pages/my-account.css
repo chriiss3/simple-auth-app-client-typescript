@@ -1,5 +1,5 @@
 .container {
-  width: 1024px;
+  width: 1060px;
   margin: 0 auto;
   padding: 0 18px;
   max-width: 100%;
@@ -11,7 +11,7 @@
   margin-top: 50px;
 }
 
-.welcome {
+.welcome-text {
   color: var(--black-100);
 }
 
@@ -28,7 +28,7 @@
   color: var(--green-200);
 }
 
-.alert-message {
+.toast-notif {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.16);
   padding: 10px;
   top: 12px;
@@ -41,14 +41,6 @@
   transform: translateX(-50%);
   background-color: var(--white-100);
   display: none;
-}
-
-.background {
-  position: absolute;
-  bottom: 0;
-  z-index: -99;
-  width: 100%;
-  pointer-events: none;
 }
 
 /* DOM */

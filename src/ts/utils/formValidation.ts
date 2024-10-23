@@ -1,15 +1,10 @@
-import { CSS_CLASSES, ERROR_MESSAGES, COLORS } from "../constants";
+import { CSS_CLASSES, CLIENT_ERROR_MESSAGES, COLORS } from "../constants";
 
-const validateEmail = (
-  emailValue: string,
-  errorMessage: HTMLElement,
-  emailInput: HTMLInputElement,
-  label: HTMLElement
-) => {
+const validateEmail = (value: string, dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
   const REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!REGEX.test(emailValue)) {
-    addFieldError(errorMessage, emailInput, ERROR_MESSAGES.invalidMail, true, label, true);
+  if (!REGEX.test(value)) {
+    showDataError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidMail);
 
     return true;
   }
@@ -17,7 +12,7 @@ const validateEmail = (
   return false;
 };
 
-const validateInputs = (labels: NodeList, inputs: NodeList, errorMessages: NodeList) => {
+const validateFields = (labels: NodeList, inputs: NodeList, fieldsError: NodeList) => {
   let emptyInput = false;
 
   inputs.forEach((input, i) => {
@@ -25,14 +20,14 @@ const validateInputs = (labels: NodeList, inputs: NodeList, errorMessages: NodeL
 
     if (inputElement.value === "") {
       const label = labels[i] as HTMLElement;
-      const errorMessage = errorMessages[i] as HTMLElement;
+      const errorMessage = fieldsError[i] as HTMLElement;
 
-      addFieldError(errorMessage, inputElement, ERROR_MESSAGES.requiredField, false, label, false);
+      showFieldError(errorMessage, inputElement, label);
 
       emptyInput = true;
     } else {
       const label = labels[i] as HTMLElement;
-      const errorMessage = errorMessages[i] as HTMLElement;
+      const errorMessage = fieldsError[i] as HTMLElement;
 
       removeFieldError(errorMessage, inputElement, label);
     }
@@ -43,12 +38,12 @@ const validateInputs = (labels: NodeList, inputs: NodeList, errorMessages: NodeL
 
 const validatePasswordLength = (
   password: string,
-  errorMessage: HTMLElement,
+  dataError: HTMLElement,
   input: HTMLInputElement,
   label: HTMLElement
 ) => {
   if (password.length < 8) {
-    addFieldError(errorMessage, input, ERROR_MESSAGES.invalidPasswordLength, true, label, true);
+    showDataError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidPasswordLength);
 
     return true;
   }
@@ -59,12 +54,12 @@ const validatePasswordLength = (
 const confirmPasswordMatch = (
   password: string,
   confirmPassword: string,
-  errorMessage: HTMLElement,
+  dataError: HTMLElement,
   confirmPasswordInput: HTMLInputElement,
   label: HTMLElement
 ) => {
   if (password !== confirmPassword) {
-    addFieldError(errorMessage, confirmPasswordInput, ERROR_MESSAGES.passwordNotMath, true, label, true);
+    showDataError(dataError, confirmPasswordInput, label, CLIENT_ERROR_MESSAGES.passwordNotMath);
 
     return true;
   }
@@ -72,9 +67,9 @@ const confirmPasswordMatch = (
   return false;
 };
 
-const validateInput = (inputValue: string, errorMessage: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const validateField = (inputValue: string, fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
   if (inputValue === "") {
-    addFieldError(errorMessage, input, ERROR_MESSAGES.requiredField, false, label, false);
+    showFieldError(fieldError, input, label);
 
     return true;
   }
@@ -82,51 +77,47 @@ const validateInput = (inputValue: string, errorMessage: HTMLElement, input: HTM
   return false;
 };
 
-const addFieldError = (
-  errorMessage: HTMLElement,
-  input: HTMLInputElement,
-  message: string,
-  isBold: boolean,
-  label: HTMLElement,
-  isFocused: boolean
-) => {
-  if (isBold) {
-    errorMessage.style.fontWeight = "600";
-  } else {
-    errorMessage.style.fontWeight = "500";
-  }
-
-  errorMessage.textContent = message;
-  errorMessage.classList.add(CSS_CLASSES.visible);
-
-  if (isFocused) input.focus();
+const showFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+  fieldError.classList.add(CSS_CLASSES.visible);
 
   label.style.color = COLORS.red;
   input.style.outlineColor = COLORS.red;
   input.style.borderColor = COLORS.red;
 };
 
-const removeFieldsError = (errorMessages: NodeList, inputs: NodeList, labels: NodeList, globalError: HTMLElement) => {
+const removeFieldsError = (fieldsError: NodeList, inputs: NodeList, labels: NodeList) => {
   inputs.forEach((input, index) => {
     const label = labels[index] as HTMLElement;
-    const errorMessage = errorMessages[index] as HTMLElement;
+    const fieldError = fieldsError[index] as HTMLElement;
     const inputElement = input as HTMLInputElement;
 
-    errorMessage.textContent = "";
-    errorMessage.classList.remove(CSS_CLASSES.visible);
+    fieldError.classList.remove(CSS_CLASSES.visible);
 
     label.style.color = "";
     inputElement.style.outlineColor = "";
     inputElement.style.borderColor = "";
   });
-
-  globalError.textContent = "";
-  globalError.classList.remove(CSS_CLASSES.visible);
 };
 
-const removeFieldError = (errorMessage: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
-  errorMessage.textContent = "";
-  errorMessage.classList.remove(CSS_CLASSES.visible);
+const removeFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+  fieldError.classList.remove(CSS_CLASSES.visible);
+
+  label.style.color = "";
+  input.style.outlineColor = "";
+  input.style.borderColor = "";
+};
+
+const showDataError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement, message: string) => {
+  dataError.textContent = message;
+  dataError.classList.add(CSS_CLASSES.visible);
+
+  label.style.color = COLORS.red;
+  input.style.outlineColor = COLORS.red;
+  input.style.borderColor = COLORS.red;
+};
+
+const removeDataError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+  dataError.classList.remove(CSS_CLASSES.visible);
 
   label.style.color = "";
   input.style.outlineColor = "";
@@ -135,11 +126,13 @@ const removeFieldError = (errorMessage: HTMLElement, input: HTMLInputElement, la
 
 export {
   validateEmail,
-  validateInputs,
+  validateFields,
   validatePasswordLength,
   confirmPasswordMatch,
-  validateInput,
-  addFieldError,
+  validateField,
+  showFieldError,
   removeFieldsError,
   removeFieldError,
+  showDataError,
+  removeDataError,
 };

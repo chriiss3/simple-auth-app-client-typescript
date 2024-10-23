@@ -5,12 +5,7 @@
   max-width: 100%;
 }
 
-.register,
-.login,
-.forgot-password,
-.reset-password {
-  /* background-color: var(--white-100); */
-  /* box-shadow: 0 2px 20px rgba(0, 0, 0, 0.16); */
+.register {
   padding: 40px;
   border-radius: 8px;
   position: absolute;
@@ -25,14 +20,6 @@
   font-size: 28px;
   color: var(--black-100);
   font-weight: 600;
-}
-
-.instruction {
-  font-size: 14px;
-  color: var(--gray-200);
-  line-height: 1.5;
-  margin-bottom: 20px;
-  max-width: 440px;
 }
 
 .form {
@@ -83,7 +70,7 @@
   cursor: pointer;
 }
 
-.field-required {
+.field-error {
   color: var(--red-100);
   font-weight: 500;
   font-size: 14px;
@@ -91,18 +78,12 @@
   display: none;
 }
 
-.error-message {
-  margin-top: 8px;
+.data-error {
   color: var(--red-100);
+  font-weight: 600;
   font-size: 14px;
+  margin-top: 12px;
   display: none;
-}
-
-.forgot-password-link {
-  font-size: 14px;
-  color: var(--gray-200);
-  margin-top: 20px;
-  text-decoration: underline;
 }
 
 .submit-button {
@@ -123,16 +104,14 @@
   background-color: var(--green-200);
 }
 
-.already-account,
-.not-account {
+.already-account {
   display: flex;
   column-gap: 4px;
   font-size: 14px;
   margin-top: 32px;
 }
 
-.login-link,
-.register-link {
+.login-page-link {
   font-weight: 600;
   color: var(--green-100);
 }
@@ -152,13 +131,6 @@
   display: none;
 }
 
-.background {
-  position: absolute;
-  bottom: 0;
-  z-index: -99;
-  width: 100%;
-}
-
 /* DOM */
 .visible {
   display: block;
@@ -176,9 +148,7 @@
 }
 
 @media screen and (max-width: 800px) {
-  .login,
-  .register,
-  .forgot-password {
+  .register {
     padding: 0;
     box-shadow: none;
     background-color: transparent;
@@ -192,16 +162,7 @@
     width: 100%;
   }
 
-  .forgot-password-link {
-    font-size: 13px;
-  }
-
-  .not-account,
   .already-account {
     width: 100%;
-  }
-
-  .background {
-    display: none;
   }
 }

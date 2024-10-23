@@ -5,8 +5,6 @@ import { CLIENT_ERROR_MESSAGES, CSS_CLASSES, PAGES, SELECTORS } from "../constan
 
 import { AxiosError } from "axios";
 
-// console.log("login ts file");
-
 verifyAccessToken(true);
 
 const passwordInput = document.querySelector(SELECTORS.passwordInput) as HTMLInputElement;
@@ -28,7 +26,6 @@ const handleFormSubmit = (event: Event) => {
   const passwordValue = passwordInput.value.trim();
   const emailLabel = labels[0] as HTMLElement;
   const passwordLabel = labels[1] as HTMLElement;
-  // const dataError = fieldsError[2] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
 
@@ -55,7 +52,7 @@ const handleFormSubmit = (event: Event) => {
 
       redirectToPage(PAGES.myAccount);
     } catch (err) {
-      // console.log(errorMessage);
+      // console.log(err);
 
       submitButton.classList.remove(CSS_CLASSES.loading);
 
@@ -79,9 +76,6 @@ const handleFormSubmit = (event: Event) => {
 
   fetchData();
 };
-
-// showDataError
-// showFieldError
 
 eyeIcon.addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcon, eyeOffIcon));
 eyeOffIcon.addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcon, eyeOffIcon));

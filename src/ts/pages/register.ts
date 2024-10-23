@@ -34,7 +34,6 @@ const handleFormSubmit = (e: Event) => {
   const emailLabel = labels[1] as HTMLElement;
   const passwordValue = passwordInput.value.trim();
   const passwordLabel = labels[2] as HTMLElement;
-  // const globalError = errorMessages[3] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
 

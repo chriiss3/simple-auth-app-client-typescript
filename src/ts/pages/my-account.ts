@@ -30,7 +30,6 @@ const handleLogoutButton = () => {
     } catch (err) {
       if (err instanceof AxiosError) {
         // console.error(err);
-        // window.location.href = `./${PAGES.login}.html`;
       }
     }
   };

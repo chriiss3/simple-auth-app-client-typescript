@@ -18,18 +18,19 @@ const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
 
 let token: string;
 
-// const getUrlToken = () => {
-//   const urlParams = new URLSearchParams(window.location.search);
-//   const urlToken = urlParams.get("token");
+// getParamsToken
+const getUrlToken = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlToken = urlParams.get("token");
 
-//   if (urlToken) {
-//     token = urlToken;
-//   } else {
-//     window.location.href = `./${PAGES.forgotPassword}.html`;
-//   }
-// };
+  if (urlToken) {
+    token = urlToken;
+  } else {
+    window.location.href = `./${PAGES.forgotPassword}.html`;
+  }
+};
 
-// getUrlToken();
+getUrlToken();
 
 passwordInputs.forEach((passwordInput, i) => {
   eyeIcons[i].addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));

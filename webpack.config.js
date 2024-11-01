@@ -8,11 +8,11 @@ const __dirname = path.dirname(__filename);
 const config = () => {
   return {
     entry: {
-      forgotpassword: "./src/ts/pages/forgot-password.ts",
+      forgotPassword: "./src/ts/pages/forgotPassword.ts",
       login: "./src/ts/pages/login.ts",
-      myaccount: "./src/ts/pages/my-account.ts",
+      myAccount: "./src/ts/pages/myAccount.ts",
       register: "./src/ts/pages/register.ts",
-      resetpassword: "./src/ts/pages/resetPassword.ts",
+      resetPassword: "./src/ts/pages/resetPassword.ts",
       formValidation: "./src/ts/utils/formValidation.ts",
       utils: "./src/ts/utils/utils.ts",
       config: "./src/ts/config.ts",

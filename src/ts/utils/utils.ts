@@ -6,6 +6,9 @@ import { CSS_CLASSES } from "../constants";
 const api = axios.create({
   baseURL: `${API_URL}/api`,
   headers: {
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0',
     "Content-Type": "application/json",
   },
   withCredentials: true,
@@ -30,9 +33,13 @@ const verifyAccessToken = async (redirect: boolean) => {
   try {
     const res = await api.get("/user/user-data");
 
-    // Redirigit si se esta autenticado
-    if (redirect) {
-      window.location.href = `./my-account.html`;
+    if (res) {
+      // console.log("res:", res)
+      
+      // Redirigit si se esta autenticado
+      if (redirect) {
+        window.location.href = `./my-account.html`;
+      }
     }
 
     return res.data;

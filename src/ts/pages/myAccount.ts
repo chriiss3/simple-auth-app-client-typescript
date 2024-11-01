@@ -29,7 +29,7 @@ const handleLogoutButton = () => {
       redirectToPage(PAGES.login);
     } catch (err) {
       if (err instanceof AxiosError) {
-        // console.error(err);
+        console.error(err);
       }
     }
   };

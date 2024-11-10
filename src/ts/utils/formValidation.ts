@@ -114,9 +114,23 @@ const showDataError = (dataError: HTMLElement, input: HTMLInputElement, label: H
   label.style.color = COLORS.red;
   input.style.outlineColor = COLORS.red;
   input.style.borderColor = COLORS.red;
+  input.focus()
 };
 
-const removeDataError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const removeDataError = (dataError: HTMLElement, inputs: NodeList, labels: NodeList) => {
+  dataError.classList.remove(CSS_CLASSES.visible);
+
+  inputs.forEach((input, index) => {
+    const label = labels[index] as HTMLElement;
+    const inputElement = input as HTMLInputElement;
+
+    label.style.color = "";
+    inputElement.style.outlineColor = "";
+    inputElement.style.borderColor = "";
+  });
+};
+
+const removeDataError2 = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
   dataError.classList.remove(CSS_CLASSES.visible);
 
   label.style.color = "";
@@ -135,4 +149,5 @@ export {
   removeFieldError,
   showDataError,
   removeDataError,
+  removeDataError2
 };

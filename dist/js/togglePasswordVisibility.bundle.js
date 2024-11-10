@@ -132,126 +132,31 @@
   var __webpack_exports__ = {};
   // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
   (() => {
-    /*!****************************************!*\
-  !*** ./src/ts/utils/formValidation.ts ***!
-  \****************************************/
+    /*!**************************************************!*\
+  !*** ./src/ts/utils/togglePasswordVisibility.ts ***!
+  \**************************************************/
     __webpack_require__.r(__webpack_exports__);
     /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-      /* harmony export */ confirmPasswordMatch: () => /* binding */ confirmPasswordMatch,
-      /* harmony export */ removeDataError: () => /* binding */ removeDataError,
-      /* harmony export */ removeFieldError: () => /* binding */ removeFieldError,
-      /* harmony export */ removeFieldsError: () => /* binding */ removeFieldsError,
-      /* harmony export */ showDataError: () => /* binding */ showDataError,
-      /* harmony export */ showFieldError: () => /* binding */ showFieldError,
-      /* harmony export */ validateEmail: () => /* binding */ validateEmail,
-      /* harmony export */ validateField: () => /* binding */ validateField,
-      /* harmony export */ validateFields: () => /* binding */ validateFields,
-      /* harmony export */ validatePasswordLength: () => /* binding */ validatePasswordLength,
+      /* harmony export */ handleEyeIcon: () => /* binding */ handleEyeIcon,
+      /* harmony export */ handleEyeOffIcon: () => /* binding */ handleEyeOffIcon,
       /* harmony export */
     });
     /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
       /*! ../constants */ "./src/ts/constants.ts"
     );
 
-    const validateEmail = (value, dataError, input, label) => {
-      const REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!REGEX.test(value)) {
-        showDataError(
-          dataError,
-          input,
-          label,
-          _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.invalidMail
-        );
-        return true;
-      }
-      return false;
+    const handleEyeIcon = (input, eyeIcon, eyeOffIcon) => {
+      input.type = "text";
+      eyeIcon.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
+      eyeOffIcon.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
     };
-    const validateFields = (labels, inputs, fieldsError) => {
-      let emptyInput = false;
-      inputs.forEach((input, i) => {
-        const inputElement = input;
-        if (inputElement.value === "") {
-          const label = labels[i];
-          const errorMessage = fieldsError[i];
-          showFieldError(errorMessage, inputElement, label);
-          emptyInput = true;
-        } else {
-          const label = labels[i];
-          const errorMessage = fieldsError[i];
-          removeFieldError(errorMessage, inputElement, label);
-        }
-      });
-      return emptyInput;
-    };
-    const validatePasswordLength = (password, dataError, input, label) => {
-      if (password.length < 8) {
-        showDataError(
-          dataError,
-          input,
-          label,
-          _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.invalidPasswordLength
-        );
-        return true;
-      }
-      return false;
-    };
-    const confirmPasswordMatch = (password, confirmPassword, dataError, confirmPasswordInput, label) => {
-      if (password !== confirmPassword) {
-        showDataError(
-          dataError,
-          confirmPasswordInput,
-          label,
-          _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.passwordNotMath
-        );
-        return true;
-      }
-      return false;
-    };
-    const validateField = (inputValue, fieldError, input, label) => {
-      if (inputValue === "") {
-        showFieldError(fieldError, input, label);
-        return true;
-      }
-      return false;
-    };
-    const showFieldError = (fieldError, input, label) => {
-      fieldError.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-      label.style.color = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-      input.style.outlineColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-      input.style.borderColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    };
-    const removeFieldsError = (fieldsError, inputs, labels) => {
-      inputs.forEach((input, index) => {
-        const label = labels[index];
-        const fieldError = fieldsError[index];
-        const inputElement = input;
-        fieldError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-        label.style.color = "";
-        inputElement.style.outlineColor = "";
-        inputElement.style.borderColor = "";
-      });
-    };
-    const removeFieldError = (fieldError, input, label) => {
-      fieldError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-      label.style.color = "";
-      input.style.outlineColor = "";
-      input.style.borderColor = "";
-    };
-    const showDataError = (dataError, input, label, message) => {
-      dataError.textContent = message;
-      dataError.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-      label.style.color = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-      input.style.outlineColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-      input.style.borderColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    };
-    const removeDataError = (dataError, input, label) => {
-      dataError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-      label.style.color = "";
-      input.style.outlineColor = "";
-      input.style.borderColor = "";
+    const handleEyeOffIcon = (input, eyeIcon, eyeOffIcon) => {
+      input.type = "password";
+      eyeIcon.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
+      eyeOffIcon.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
     };
   })();
 
   /******/
 })();
-//# sourceMappingURL=formValidation.bundle.js.map
+//# sourceMappingURL=togglePasswordVisibility.bundle.js.map

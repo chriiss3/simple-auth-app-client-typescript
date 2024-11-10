@@ -10,12 +10,15 @@ const config = () => {
     entry: {
       forgotPassword: "./src/ts/pages/forgotPassword.ts",
       login: "./src/ts/pages/login.ts",
-      myAccount: "./src/ts/pages/myAccount.ts",
+      home: "./src/ts/pages/home.ts",
       register: "./src/ts/pages/register.ts",
       resetPassword: "./src/ts/pages/resetPassword.ts",
+      settings: "./src/ts/pages/settings.ts",
       formValidation: "./src/ts/utils/formValidation.ts",
+      togglePasswordVisibility: "./src/ts/utils/togglePasswordVisibility.ts",
       utils: "./src/ts/utils/utils.ts",
       config: "./src/ts/config.ts",
+      constants: "./src/ts/constants.ts",
     },
     module: {
       rules: [
@@ -28,21 +31,27 @@ const config = () => {
     },
     plugins: [
       new Dotenv({
-        path: process.env.NODE_ENV === "production" ? ".env.production" : ".env.development",
+        path: ".env.development",
+        // path: process.env.NODE_ENV.trim() === "production" ? ".env.production" : ".env.development",
       }),
     ],
     resolve: {
       extensions: [".ts", ".js"],
     },
     output: {
+      //       filename: "js/[name].bundle.js",
       filename: "js/[name].bundle.js",
       path: path.resolve(__dirname, "dist"),
       publicPath: "/",
     },
-    mode: process.env.NODE_ENV,
-    devtool: process.env.NODE_ENV === "production" ? false : "source-map",
+    // mode: process.env.NODE_ENV.trim(),
+    // devtool: process.env.NODE_ENV.trim() === "production" ? false : "source-map",
+    mode: "development",
+    devtool: "source-map",
     devServer: {
-      static: "./dist",
+      static: {
+        directory: path.resolve(__dirname, "dist"),
+      },
       hot: true,
       port: 8080,
       open: true,

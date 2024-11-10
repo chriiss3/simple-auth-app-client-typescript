@@ -6,12 +6,11 @@
 }
 
 .register {
-  padding: 40px;
-  border-radius: 8px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 440px;
 }
 
 .title {
@@ -23,7 +22,7 @@
 }
 
 .form {
-  width: 440px;
+  margin-bottom: 32px;
 }
 
 .field-container {
@@ -36,7 +35,7 @@
   font-size: 14px;
   color: var(--black-100);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .input-container {
@@ -74,7 +73,7 @@
   color: var(--red-100);
   font-weight: 500;
   font-size: 14px;
-  margin-top: 8px;
+  margin-top: 10px;
   display: none;
 }
 
@@ -82,12 +81,12 @@
   color: var(--red-100);
   font-weight: 600;
   font-size: 14px;
-  margin-top: 12px;
+  margin-top: 10px;
   display: none;
 }
 
 .submit-button {
-  margin-top: 32px;
+  margin-top: 22px;
   width: 100%;
   border: 0;
   font-weight: 600;
@@ -104,19 +103,21 @@
   background-color: var(--green-200);
 }
 
-.already-account {
+.login-reminder {
   display: flex;
   column-gap: 4px;
   font-size: 14px;
-  margin-top: 32px;
+  width: fit-content;
+  color: #161616;
 }
 
 .login-page-link {
   font-weight: 600;
   color: var(--green-100);
+  text-decoration: none;
 }
 
-.alert-message {
+.toast-notif {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.16);
   padding: 10px;
   top: 12px;
@@ -131,7 +132,6 @@
   display: none;
 }
 
-/* DOM */
 .visible {
   display: block;
   pointer-events: all;
@@ -149,20 +149,10 @@
 
 @media screen and (max-width: 800px) {
   .register {
-    padding: 0;
-    box-shadow: none;
-    background-color: transparent;
     position: relative;
     top: 50px;
     left: 50%;
     transform: translateX(-50%);
-  }
-
-  .form {
-    width: 100%;
-  }
-
-  .already-account {
     width: 100%;
   }
 }

@@ -1,5 +1,11 @@
 import { api, showToast, redirectToPage, verifyAccessToken } from "../utils/utils";
-import { validateEmail, validateFields, removeFieldsError, showDataError } from "../utils/formValidation";
+import {
+  validateEmail,
+  validateFields,
+  removeFieldsError,
+  showDataError,
+  removeDataError,
+} from "../utils/formValidation";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CLIENT_ERROR_MESSAGES, CSS_CLASSES, PAGES, SELECTORS } from "../constants";
 
@@ -28,13 +34,15 @@ const handleFormSubmit = (event: Event) => {
   const passwordLabel = labels[1] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
+  removeDataError(dataError, inputs, labels);
 
   if (validateFields(labels, inputs, fieldsError)) return;
   if (validateEmail(emailValue, dataError, emailInput, emailLabel)) return;
 
-  const fetchData = async () => {
+  const login = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
     const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
+    const timeoutDuration = 5000;
 
     submitButton.classList.add(CSS_CLASSES.loading);
 
@@ -43,21 +51,29 @@ const handleFormSubmit = (event: Event) => {
       password: passwordValue,
     });
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
+
     try {
-      const res = await api.post("/auth/login", formData);
+      const res = await api.post("/auth/login", formData, {
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
 
       submitButton.classList.remove(CSS_CLASSES.loading);
 
       showToast(toastNotif, res.data.message);
 
-      redirectToPage(PAGES.myAccount);
+      redirectToPage(PAGES.home);
     } catch (err) {
-      // console.log(err);
+      clearTimeout(timeoutId);
 
       submitButton.classList.remove(CSS_CLASSES.loading);
 
       if (err instanceof AxiosError) {
         if (!err.response) {
+          showToast(toastNotif, "No hay conexion a internet");
+
           return;
         }
 
@@ -70,11 +86,13 @@ const handleFormSubmit = (event: Event) => {
         if (errorMessage === CLIENT_ERROR_MESSAGES.incorrectPassword) {
           showDataError(dataError, passwordInput, passwordLabel, errorMessage);
         }
+      } else {
+        showToast(toastNotif, "La solicitud ha tardado demasiado, inténtalo nuevamente.");
       }
     }
   };
 
-  fetchData();
+  login();
 };
 
 eyeIcon.addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcon, eyeOffIcon));

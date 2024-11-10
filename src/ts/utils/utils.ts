@@ -6,9 +6,9 @@ import { CSS_CLASSES } from "../constants";
 const api = axios.create({
   baseURL: `${API_URL}/api`,
   headers: {
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0',
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    Pragma: "no-cache",
+    Expires: "0",
     "Content-Type": "application/json",
   },
   withCredentials: true,
@@ -34,22 +34,19 @@ const verifyAccessToken = async (redirect: boolean) => {
     const res = await api.get("/user/user-data");
 
     if (res) {
-      // console.log("res:", res)
-      
-      // Redirigit si se esta autenticado
       if (redirect) {
-        window.location.href = `./my-account.html`;
+        window.location.href = `./home.html`;
       }
     }
 
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {
-      console.error(err);
+      const protectedPages = ["/home.html", "/settings.html"];
 
-      // Redirigit si se intenta acceder a una ruta sin estar autenticado
-      if (window.location.pathname === "/my-account.html") {
-        window.location.href = `./login.html`;
+      // Redirigit si se intenta acceder a paginas de protectedPages sin estar autenticado
+      if (protectedPages.includes(window.location.pathname)) {
+        window.location.href = "./login.html";
       }
     }
   }

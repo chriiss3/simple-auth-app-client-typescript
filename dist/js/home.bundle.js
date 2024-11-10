@@ -76,130 +76,6 @@
         /***/
       },
 
-    /***/ "./src/ts/utils/formValidation.ts":
-      /*!****************************************!*\
-  !*** ./src/ts/utils/formValidation.ts ***!
-  \****************************************/
-      /***/ (__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-        __webpack_require__.r(__webpack_exports__);
-        /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-          /* harmony export */ confirmPasswordMatch: () => /* binding */ confirmPasswordMatch,
-          /* harmony export */ removeDataError: () => /* binding */ removeDataError,
-          /* harmony export */ removeFieldError: () => /* binding */ removeFieldError,
-          /* harmony export */ removeFieldsError: () => /* binding */ removeFieldsError,
-          /* harmony export */ showDataError: () => /* binding */ showDataError,
-          /* harmony export */ showFieldError: () => /* binding */ showFieldError,
-          /* harmony export */ validateEmail: () => /* binding */ validateEmail,
-          /* harmony export */ validateField: () => /* binding */ validateField,
-          /* harmony export */ validateFields: () => /* binding */ validateFields,
-          /* harmony export */ validatePasswordLength: () => /* binding */ validatePasswordLength,
-          /* harmony export */
-        });
-        /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
-          /*! ../constants */ "./src/ts/constants.ts"
-        );
-
-        const validateEmail = (value, dataError, input, label) => {
-          const REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!REGEX.test(value)) {
-            showDataError(
-              dataError,
-              input,
-              label,
-              _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.invalidMail
-            );
-            return true;
-          }
-          return false;
-        };
-        const validateFields = (labels, inputs, fieldsError) => {
-          let emptyInput = false;
-          inputs.forEach((input, i) => {
-            const inputElement = input;
-            if (inputElement.value === "") {
-              const label = labels[i];
-              const errorMessage = fieldsError[i];
-              showFieldError(errorMessage, inputElement, label);
-              emptyInput = true;
-            } else {
-              const label = labels[i];
-              const errorMessage = fieldsError[i];
-              removeFieldError(errorMessage, inputElement, label);
-            }
-          });
-          return emptyInput;
-        };
-        const validatePasswordLength = (password, dataError, input, label) => {
-          if (password.length < 8) {
-            showDataError(
-              dataError,
-              input,
-              label,
-              _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.invalidPasswordLength
-            );
-            return true;
-          }
-          return false;
-        };
-        const confirmPasswordMatch = (password, confirmPassword, dataError, confirmPasswordInput, label) => {
-          if (password !== confirmPassword) {
-            showDataError(
-              dataError,
-              confirmPasswordInput,
-              label,
-              _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.passwordNotMath
-            );
-            return true;
-          }
-          return false;
-        };
-        const validateField = (inputValue, fieldError, input, label) => {
-          if (inputValue === "") {
-            showFieldError(fieldError, input, label);
-            return true;
-          }
-          return false;
-        };
-        const showFieldError = (fieldError, input, label) => {
-          fieldError.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-          label.style.color = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-          input.style.outlineColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-          input.style.borderColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-        };
-        const removeFieldsError = (fieldsError, inputs, labels) => {
-          inputs.forEach((input, index) => {
-            const label = labels[index];
-            const fieldError = fieldsError[index];
-            const inputElement = input;
-            fieldError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-            label.style.color = "";
-            inputElement.style.outlineColor = "";
-            inputElement.style.borderColor = "";
-          });
-        };
-        const removeFieldError = (fieldError, input, label) => {
-          fieldError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-          label.style.color = "";
-          input.style.outlineColor = "";
-          input.style.borderColor = "";
-        };
-        const showDataError = (dataError, input, label, message) => {
-          dataError.textContent = message;
-          dataError.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-          label.style.color = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-          input.style.outlineColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-          input.style.borderColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-        };
-        const removeDataError = (dataError, input, label) => {
-          dataError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-          label.style.color = "";
-          input.style.outlineColor = "";
-          input.style.borderColor = "";
-        };
-
-        /***/
-      },
-
     /***/ "./src/ts/utils/utils.ts":
       /*!*******************************!*\
   !*** ./src/ts/utils/utils.ts ***!
@@ -5623,88 +5499,49 @@
   var __webpack_exports__ = {};
   // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
   (() => {
-    /*!****************************************!*\
-  !*** ./src/ts/pages/forgotPassword.ts ***!
-  \****************************************/
+    /*!******************************!*\
+  !*** ./src/ts/pages/home.ts ***!
+  \******************************/
     __webpack_require__.r(__webpack_exports__);
-    /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! axios */ "./node_modules/axios/index.js"
-    );
     /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
       /*! ../utils/utils */ "./src/ts/utils/utils.ts"
     );
-    /* harmony import */ var _utils_formValidation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
-      /*! ../utils/formValidation */ "./src/ts/utils/formValidation.ts"
-    );
-    /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
       /*! ../constants */ "./src/ts/constants.ts"
     );
+    /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+      /*! axios */ "./node_modules/axios/index.js"
+    );
 
-    const form = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.form);
-    console.log("zzz");
-    (0, _utils_utils__WEBPACK_IMPORTED_MODULE_0__.verifyAccessToken)(true);
-    const handleFormSubmit = (event) => {
-      event.preventDefault();
-      const toastNotif = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.toastNotif);
-      const emailInput = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.emailInput);
-      const emailLabel = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.emailLabel);
-      const emailFieldError = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.fieldError);
-      const dataError = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.dataError);
-      const emailValue = emailInput.value.trim();
-      console.log(emailFieldError);
-      (0, _utils_formValidation__WEBPACK_IMPORTED_MODULE_1__.removeFieldError)(emailFieldError, emailInput, emailLabel);
-      if (
-        (0, _utils_formValidation__WEBPACK_IMPORTED_MODULE_1__.validateField)(
-          emailValue,
-          emailFieldError,
-          emailInput,
-          emailLabel
-        )
-      )
-        return;
-      if (
-        (0, _utils_formValidation__WEBPACK_IMPORTED_MODULE_1__.validateEmail)(
-          emailValue,
-          dataError,
-          emailInput,
-          emailLabel
-        )
-      )
-        return;
-      const fetchData = async () => {
-        const submitButton = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.submitButton);
-        submitButton.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__.CSS_CLASSES.loading);
-        const formData = JSON.stringify({ email: emailValue });
+    const logoutButton = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_1__.SELECTORS.logoutButton);
+    const getUserData = async () => {
+      const userName = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_1__.SELECTORS.userName);
+      const user = await (0, _utils_utils__WEBPACK_IMPORTED_MODULE_0__.verifyAccessToken)(false);
+      if (user) {
+        userName.textContent = user.name;
+      }
+    };
+    getUserData();
+    const handleLogoutButton = () => {
+      const logout = async () => {
+        const toastNotif = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_1__.SELECTORS.toastNotif);
         try {
-          const res = await _utils_utils__WEBPACK_IMPORTED_MODULE_0__.api.post("/auth/forgot-password", formData);
-          submitButton.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__.CSS_CLASSES.loading);
+          const res = await _utils_utils__WEBPACK_IMPORTED_MODULE_0__.api.post("/auth/logout");
           (0, _utils_utils__WEBPACK_IMPORTED_MODULE_0__.showToast)(toastNotif, res.data.message);
-          emailInput.value = "";
           (0, _utils_utils__WEBPACK_IMPORTED_MODULE_0__.redirectToPage)(
-            _constants__WEBPACK_IMPORTED_MODULE_2__.PAGES.login
+            _constants__WEBPACK_IMPORTED_MODULE_1__.PAGES.login
           );
         } catch (err) {
-          if (err instanceof axios__WEBPACK_IMPORTED_MODULE_3__.AxiosError) {
+          if (err instanceof axios__WEBPACK_IMPORTED_MODULE_2__.AxiosError) {
             // console.error(err);
-            submitButton.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__.CSS_CLASSES.loading);
-            if (!err.response) {
-              return;
-            }
-            const errorMessage = err.response.data.error;
-            (0, _utils_formValidation__WEBPACK_IMPORTED_MODULE_1__.showDataError)(
-              dataError,
-              emailInput,
-              emailLabel,
-              errorMessage
-            );
           }
         }
       };
-      fetchData();
+      logout();
     };
-    form.addEventListener("submit", handleFormSubmit);
+    logoutButton.addEventListener("click", handleLogoutButton);
   })();
 
   /******/
 })();
-//# sourceMappingURL=forgotPassword.bundle.js.map
+//# sourceMappingURL=home.bundle.js.map

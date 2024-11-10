@@ -5,6 +5,7 @@ import {
   validatePasswordLength,
   removeFieldsError,
   showDataError,
+  removeDataError,
 } from "../utils/formValidation";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
@@ -18,8 +19,7 @@ const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
 
 let token: string;
 
-// getParamsToken
-const getUrlToken = () => {
+const getParamsToken = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const urlToken = urlParams.get("token");
 
@@ -30,42 +30,46 @@ const getUrlToken = () => {
   }
 };
 
-getUrlToken();
-
-passwordInputs.forEach((passwordInput, i) => {
-  eyeIcons[i].addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
-  eyeOffIcons[i].addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
-});
+getParamsToken();
 
 const handleFormSubmit = (event: Event) => {
   event.preventDefault();
 
   const labels = document.querySelectorAll<HTMLInputElement>(SELECTORS.label);
   const inputs = document.querySelectorAll<HTMLInputElement>(SELECTORS.input);
-  const passwordInput = document.querySelector(SELECTORS.passwordInput) as HTMLInputElement;
-  const confirmPasswordInput = document.querySelector(SELECTORS.confirmPasswordInput) as HTMLInputElement;
+  const newPasswordInput = document.querySelector(SELECTORS.newPasswordInput) as HTMLInputElement;
+  const confirmNewPasswordInput = document.querySelector(SELECTORS.confirmNewPasswordInput) as HTMLInputElement;
   const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
   const fieldsError = document.querySelectorAll(SELECTORS.fieldError) as NodeList;
   const dataError = document.querySelector(SELECTORS.dataError) as HTMLInputElement;
 
-  const passwordValue = passwordInput.value.trim();
-  const passwordLabel = labels[0] as HTMLElement;
-  const confirmPasswordValue = confirmPasswordInput.value.trim();
-  const confirmPasswordLabel = labels[1] as HTMLElement;
+  const newPasswordValue = newPasswordInput.value.trim();
+  const newPasswordLabel = labels[0] as HTMLElement;
+  const confirmNewPasswordValue = confirmNewPasswordInput.value.trim();
+  const confirmNewPasswordLabel = labels[1] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
+  removeDataError(dataError, inputs, labels);
 
   if (validateFields(labels, inputs, fieldsError)) return;
-  if (confirmPasswordMatch(passwordValue, confirmPasswordValue, dataError, confirmPasswordInput, confirmPasswordLabel))
+  if (
+    confirmPasswordMatch(
+      newPasswordValue,
+      confirmNewPasswordValue,
+      dataError,
+      confirmNewPasswordInput,
+      confirmNewPasswordLabel
+    )
+  )
     return;
-  if (validatePasswordLength(passwordValue, dataError, passwordInput, passwordLabel)) return;
+  if (validatePasswordLength(newPasswordValue, dataError, newPasswordInput, newPasswordLabel)) return;
 
-  const dataFetching = async () => {
+  const resetPassword = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
 
     const formData = JSON.stringify({
-      newPassword: passwordValue,
-      confirmNewPassword: confirmPasswordValue,
+      newPassword: newPasswordValue,
+      confirmNewPassword: confirmNewPasswordValue,
     });
 
     submitButton.classList.add(CSS_CLASSES.loading);
@@ -81,27 +85,30 @@ const handleFormSubmit = (event: Event) => {
 
       showToast(toastNotif, res.data.message);
 
-      passwordInput.value = "";
-      confirmPasswordInput.value = "";
+      newPasswordInput.value = "";
+      confirmNewPasswordInput.value = "";
 
-      redirectToPage(PAGES.myAccount);
+      redirectToPage(PAGES.home);
     } catch (err) {
-      if (err instanceof AxiosError) {
-        submitButton.classList.remove(CSS_CLASSES.loading);
+      submitButton.classList.remove(CSS_CLASSES.loading);
 
-        // console.error(err);
+      if (err instanceof AxiosError) {
         if (!err.response) {
           return;
         }
 
         const errorMessage: string = err.response.data.error;
 
-        showDataError(dataError, passwordInput, passwordLabel, errorMessage);
+        showDataError(dataError, newPasswordInput, newPasswordLabel, errorMessage);
       }
     }
   };
 
-  dataFetching();
+  resetPassword();
 };
 
+passwordInputs.forEach((passwordInput, i) => {
+  eyeIcons[i].addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
+  eyeOffIcons[i].addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
+});
 form.addEventListener("submit", handleFormSubmit);

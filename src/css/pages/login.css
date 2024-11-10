@@ -6,12 +6,11 @@
 }
 
 .login {
-  padding: 40px;
-  border-radius: 8px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 440px;
 }
 
 .title {
@@ -23,7 +22,7 @@
 }
 
 .form {
-  width: 440px;
+  margin-bottom: 32px;
 }
 
 .field-container {
@@ -36,7 +35,7 @@
   font-size: 14px;
   color: var(--black-100);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .input-container {
@@ -74,7 +73,7 @@
   color: var(--red-100);
   font-weight: 500;
   font-size: 14px;
-  margin-top: 8px;
+  margin-top: 10px;
   display: none;
 }
 
@@ -82,19 +81,18 @@
   color: var(--red-100);
   font-weight: 600;
   font-size: 14px;
-  margin-top: 12px;
+  margin-top: 10px;
   display: none;
 }
 
-.forgot-password-link {
+.forgot-password-page-link {
   font-size: 14px;
   color: var(--gray-200);
-  margin-top: 20px;
-  text-decoration: underline;
+  margin: 22px 0;
+  width: fit-content;
 }
 
 .submit-button {
-  margin-top: 32px;
   width: 100%;
   border: 0;
   font-weight: 600;
@@ -111,16 +109,18 @@
   background-color: var(--green-200);
 }
 
-.not-account-link {
+.register-reminder {
   display: flex;
   column-gap: 4px;
   font-size: 14px;
-  margin-top: 32px;
+  color: #161616;
+  width: fit-content;
 }
 
 .register-page-link {
   font-weight: 600;
   color: var(--green-100);
+  text-decoration: none;
 }
 
 .toast-notif {
@@ -138,7 +138,6 @@
   display: none;
 }
 
-/* DOM */
 .visible {
   display: block;
   pointer-events: all;
@@ -156,24 +155,10 @@
 
 @media screen and (max-width: 800px) {
   .login {
-    padding: 0;
-    box-shadow: none;
-    background-color: transparent;
     position: relative;
     top: 50px;
     left: 50%;
     transform: translateX(-50%);
-  }
-
-  .form {
-    width: 100%;
-  }
-
-  .forgot-password-link {
-    font-size: 13px;
-  }
-
-  .not-account {
     width: 100%;
   }
 }

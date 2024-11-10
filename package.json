@@ -1,5 +1,5 @@
 {
-  "name": "simple-auth-app-client-ts",
+  "name": "simple-auth-app-client-typescript",
   "version": "1.0.0",
   "scripts": {
     "build:prod": "cross-env NODE_ENV=production npx webpack",

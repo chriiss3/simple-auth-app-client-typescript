@@ -1,35 +1,85 @@
 .container {
-  position: relative;
-  height: 100vh;
+  width: 1060px;
+  margin: 0 auto;
   padding: 0 18px;
   max-width: 100%;
 }
 
-.forgot-password {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  margin-bottom: 60px;
+}
+
+.welcome-text {
+  color: var(--black-100);
+}
+
+.logout-button {
+  background-color: transparent;
+  font-weight: 600;
+  color: var(--green-100);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  color: var(--green-200);
+}
+
+.settings-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: #161616;
+}
+
+.settings-links {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+
+.update-password-link,
+.update-email-link,
+.delete-account-link {
+  font-size: 14px;
+  color: #161616;
+}
+
+/* - */
+.update-password {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.content {
   width: 440px;
 }
 
+.top {
+  display: flex;
+  column-gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.arrow-left-icon {
+  cursor: pointer;
+}
+
 .title {
-  text-align: center;
-  margin-bottom: 50px;
-  font-size: 28px;
-  color: var(--black-100);
+  font-size: 22px;
   font-weight: 600;
 }
 
-.instruction {
-  font-size: 14px;
-  color: var(--gray-200);
-  line-height: 1.5;
-  margin-bottom: 22px;
-}
-
 .form {
-  margin-bottom: 32px;
+  row-gap: 22px;
+  display: flex;
+  flex-direction: column;
 }
 
 .field-container {
@@ -59,12 +109,6 @@
   height: 36px;
 }
 
-.input:focus {
-  outline-color: var(--green-100);
-  border: 1px solid var(--green-100);
-  background-color: transparent;
-}
-
 .eye-icon,
 .eye-off-icon {
   display: none;
@@ -80,20 +124,29 @@
   color: var(--red-100);
   font-weight: 500;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 8px;
   display: none;
 }
 
 .data-error {
-  margin-top: 10px;
   color: var(--red-100);
-  font-size: 14px;
-  display: none;
   font-weight: 600;
+  font-size: 14px;
+  margin-top: 10px;
+  display: none;
+}
+
+.logout-all-devices {
+  display: flex;
+  align-items: center;
+  column-gap: 2px;
+}
+
+.logout-all-devices-text {
+  font-size: 14px;
 }
 
 .submit-button {
-  margin-top: 22px;
   width: 100%;
   border: 0;
   font-weight: 600;
@@ -110,16 +163,43 @@
   background-color: var(--green-200);
 }
 
-.register-reminder {
+/* - */
+.update-email {
   display: flex;
-  column-gap: 4px;
+  width: 100%;
+  justify-content: center;
+}
+
+.update-email .input {
+  margin-bottom: 10px;
+}
+
+.update-email-note {
+  font-size: 14px;
+  color: #404040;
+}
+
+/* - */
+.delete-account {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.delete-account-confirmation {
+  display: flex;
+  align-items: center;
+  column-gap: 2px;
+  margin-bottom: 24px;
+}
+
+.delete-account-confirmation-text {
   font-size: 14px;
 }
 
-.register-page-link {
-  font-weight: 600;
-  color: var(--green-100);
-  text-decoration: none;
+.delete-account .submit-button {
+  padding: 10px;
+  width: fit-content;
 }
 
 .toast-notif {
@@ -137,6 +217,10 @@
   display: none;
 }
 
+.hidden {
+  display: none;
+}
+
 .visible {
   display: block;
   pointer-events: all;
@@ -150,14 +234,4 @@
 
 .loading:hover {
   background-color: var(--green-200);
-}
-
-@media screen and (max-width: 800px) {
-  .forgot-password {
-    position: relative;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-  }
 }

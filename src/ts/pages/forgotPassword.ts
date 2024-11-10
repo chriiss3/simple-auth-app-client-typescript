@@ -1,12 +1,16 @@
 import { AxiosError } from "axios";
 
 import { api, showToast, redirectToPage, verifyAccessToken } from "../utils/utils";
-import { validateEmail, validateField, showDataError, removeFieldError } from "../utils/formValidation";
+import {
+  validateEmail,
+  validateField,
+  showDataError,
+  removeFieldError,
+  removeDataError2,
+} from "../utils/formValidation";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
 
 const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
-
-console.log(document.querySelector(SELECTORS.fieldError));
 
 verifyAccessToken(true);
 
@@ -20,13 +24,13 @@ const handleFormSubmit = (event: Event) => {
   const dataError = document.querySelector(SELECTORS.dataError) as HTMLInputElement;
   const emailValue = emailInput.value.trim();
 
-  console.log(emailFieldError);
-
   removeFieldError(emailFieldError, emailInput, emailLabel);
+  removeDataError2(dataError, emailInput, emailLabel)
+
   if (validateField(emailValue, emailFieldError, emailInput, emailLabel)) return;
   if (validateEmail(emailValue, dataError, emailInput, emailLabel)) return;
 
-  const fetchData = async () => {
+  const sendResetLink = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
     submitButton.classList.add(CSS_CLASSES.loading);
 
@@ -43,22 +47,20 @@ const handleFormSubmit = (event: Event) => {
 
       redirectToPage(PAGES.login);
     } catch (err) {
-      if (err instanceof AxiosError) {
-        // console.error(err);
+      submitButton.classList.remove(CSS_CLASSES.loading);
 
-        submitButton.classList.remove(CSS_CLASSES.loading);
+      if (err instanceof AxiosError) {
         if (!err.response) {
           return;
         }
 
         const errorMessage: string = err.response.data.error;
-
         showDataError(dataError, emailInput, emailLabel, errorMessage);
       }
     }
   };
 
-  fetchData();
+  sendResetLink();
 };
 
 form.addEventListener("submit", handleFormSubmit);

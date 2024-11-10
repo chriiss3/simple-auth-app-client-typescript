@@ -5,6 +5,7 @@ import {
   removeFieldsError,
   validatePasswordLength,
   showDataError,
+  removeDataError
 } from "../utils/formValidation";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
@@ -36,12 +37,13 @@ const handleFormSubmit = (e: Event) => {
   const passwordLabel = labels[2] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
+  removeDataError(dataError,inputs,labels )
 
   if (validateFields(labels, inputs, fieldsError)) return;
   if (validateEmail(emailValue, dataError, emailInput, emailLabel)) return;
   if (validatePasswordLength(passwordValue, dataError, passwordInput, passwordLabel)) return;
 
-  const fetchData = async () => {
+  const register = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
     const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 
@@ -60,23 +62,22 @@ const handleFormSubmit = (e: Event) => {
 
       showToast(toastNotif, res.data.message);
 
-      redirectToPage(PAGES.myAccount);
+      redirectToPage(PAGES.home);
     } catch (err) {
-      if (err instanceof AxiosError) {
-        submitButton.classList.remove(CSS_CLASSES.loading);
+      submitButton.classList.remove(CSS_CLASSES.loading);
 
+      if (err instanceof AxiosError) {
         if (!err.response) {
           return;
         }
 
         const errorMessage: string = err.response.data.error;
         showDataError(dataError, emailInput, emailLabel, errorMessage);
-        // console.error(err);
       }
     }
   };
 
-  fetchData();
+  register();
 };
 
 eyeIcon.addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcon, eyeOffIcon));

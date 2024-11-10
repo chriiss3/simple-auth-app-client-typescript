@@ -9,7 +9,7 @@ const CLIENT_ERROR_MESSAGES = {
 };
 
 const PAGES = {
-  myAccount: "my-account",
+  home: "home",
   login: "login",
   forgotPassword: "forgot-password",
 };
@@ -22,7 +22,8 @@ const CSS_CLASSES = {
 const CLIENT_SUCCESS_MESSAGES = {};
 
 const SELECTORS = {
-  confirmPasswordInput: "#confirm-password-input",
+  newPasswordInput: "#new-password-input",
+  confirmNewPasswordInput: "#confirm-new-password-input",
   nameInput: "#name-input",
   logoutButton: ".logout-button",
   userName: ".user-name",

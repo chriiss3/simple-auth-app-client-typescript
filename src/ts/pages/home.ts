@@ -1,14 +1,15 @@
-import { api, showToast, redirectToPage, verifyAccessToken } from "../utils/utils";
+import { api, showToast, redirectToPage, verifyAccessToken } from "../utils";
 import { PAGES, SELECTORS } from "../constants";
 
-// import { AxiosError } from "axios";
-
+const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 const logoutButton = document.querySelector(SELECTORS.logoutButton) as HTMLButtonElement;
+
+import { AxiosError } from "axios";
 
 const getUserData = async () => {
   const userName = document.querySelector(SELECTORS.userName) as HTMLElement;
 
-  const user = await verifyAccessToken(false);
+  const user = await verifyAccessToken(false, toastNotif);
 
   if (user) {
     userName.textContent = user.name;
@@ -19,8 +20,6 @@ getUserData();
 
 const handleLogoutButton = () => {
   const logout = async () => {
-    const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
-
     try {
       const res = await api.post("/auth/logout");
 
@@ -28,9 +27,13 @@ const handleLogoutButton = () => {
 
       redirectToPage(PAGES.login);
     } catch (err) {
-      console.error(err);
-      // if (err instanceof AxiosError) {
-      // }
+      if (err instanceof AxiosError) {
+        if (!err.response) {
+          showToast(toastNotif, "Ocurrio un error desconocido");
+
+          return;
+        }
+      }
     }
   };
 

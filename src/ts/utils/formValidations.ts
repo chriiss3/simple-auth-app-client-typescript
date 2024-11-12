@@ -1,10 +1,10 @@
 import { CSS_CLASSES, CLIENT_ERROR_MESSAGES, COLORS } from "../constants";
 
-const validateEmail = (value: string, dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const validateEmail = (value: string, dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement): boolean => {
   const REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!REGEX.test(value)) {
-    showDataError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidMail);
+    addFormError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidMail);
 
     return true;
   }
@@ -12,7 +12,7 @@ const validateEmail = (value: string, dataError: HTMLElement, input: HTMLInputEl
   return false;
 };
 
-const validateFields = (labels: NodeList, inputs: NodeList, fieldsError: NodeList) => {
+const validateFields = (labels: NodeList, inputs: NodeList, fieldsError: NodeList): boolean => {
   let emptyInput = false;
 
   inputs.forEach((input, i) => {
@@ -22,7 +22,7 @@ const validateFields = (labels: NodeList, inputs: NodeList, fieldsError: NodeLis
       const label = labels[i] as HTMLElement;
       const errorMessage = fieldsError[i] as HTMLElement;
 
-      showFieldError(errorMessage, inputElement, label);
+      addFieldError(errorMessage, inputElement, label);
 
       emptyInput = true;
     } else {
@@ -41,9 +41,9 @@ const validatePasswordLength = (
   dataError: HTMLElement,
   input: HTMLInputElement,
   label: HTMLElement
-) => {
+): boolean => {
   if (password.length < 8) {
-    showDataError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidPasswordLength);
+    addFormError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidPasswordLength);
 
     return true;
   }
@@ -51,15 +51,15 @@ const validatePasswordLength = (
   return false;
 };
 
-const confirmPasswordMatch = (
+const validatePasswordMatch = (
   password: string,
   confirmPassword: string,
   dataError: HTMLElement,
   confirmPasswordInput: HTMLInputElement,
   label: HTMLElement
-) => {
+): boolean => {
   if (password !== confirmPassword) {
-    showDataError(dataError, confirmPasswordInput, label, CLIENT_ERROR_MESSAGES.passwordNotMath);
+    addFormError(dataError, confirmPasswordInput, label, CLIENT_ERROR_MESSAGES.passwordNotMath);
 
     return true;
   }
@@ -67,9 +67,9 @@ const confirmPasswordMatch = (
   return false;
 };
 
-const validateField = (inputValue: string, fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const validateField = (inputValue: string, fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement): boolean => {
   if (inputValue === "") {
-    showFieldError(fieldError, input, label);
+    addFieldError(fieldError, input, label);
 
     return true;
   }
@@ -77,7 +77,7 @@ const validateField = (inputValue: string, fieldError: HTMLElement, input: HTMLI
   return false;
 };
 
-const showFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const addFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement): void => {
   fieldError.classList.add(CSS_CLASSES.visible);
 
   label.style.color = COLORS.red;
@@ -85,7 +85,7 @@ const showFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label:
   input.style.borderColor = COLORS.red;
 };
 
-const removeFieldsError = (fieldsError: NodeList, inputs: NodeList, labels: NodeList) => {
+const removeFieldsError = (fieldsError: NodeList, inputs: NodeList, labels: NodeList): void => {
   inputs.forEach((input, index) => {
     const label = labels[index] as HTMLElement;
     const fieldError = fieldsError[index] as HTMLElement;
@@ -99,7 +99,7 @@ const removeFieldsError = (fieldsError: NodeList, inputs: NodeList, labels: Node
   });
 };
 
-const removeFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const removeFieldError = (fieldError: HTMLElement, input: HTMLInputElement, label: HTMLElement): void => {
   fieldError.classList.remove(CSS_CLASSES.visible);
 
   label.style.color = "";
@@ -107,17 +107,17 @@ const removeFieldError = (fieldError: HTMLElement, input: HTMLInputElement, labe
   input.style.borderColor = "";
 };
 
-const showDataError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement, message: string) => {
+const addFormError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement, message: string): void => {
   dataError.textContent = message;
   dataError.classList.add(CSS_CLASSES.visible);
 
   label.style.color = COLORS.red;
   input.style.outlineColor = COLORS.red;
   input.style.borderColor = COLORS.red;
-  input.focus()
+  input.focus();
 };
 
-const removeDataError = (dataError: HTMLElement, inputs: NodeList, labels: NodeList) => {
+const removeFormErrors = (dataError: HTMLElement, inputs: NodeList, labels: NodeList): void => {
   dataError.classList.remove(CSS_CLASSES.visible);
 
   inputs.forEach((input, index) => {
@@ -130,7 +130,7 @@ const removeDataError = (dataError: HTMLElement, inputs: NodeList, labels: NodeL
   });
 };
 
-const removeDataError2 = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement) => {
+const removeFormError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement): void => {
   dataError.classList.remove(CSS_CLASSES.visible);
 
   label.style.color = "";
@@ -142,12 +142,12 @@ export {
   validateEmail,
   validateFields,
   validatePasswordLength,
-  confirmPasswordMatch,
+  validatePasswordMatch,
   validateField,
-  showFieldError,
+  addFieldError,
   removeFieldsError,
   removeFieldError,
-  showDataError,
-  removeDataError,
-  removeDataError2
+  addFormError,
+  removeFormErrors,
+  removeFormError,
 };

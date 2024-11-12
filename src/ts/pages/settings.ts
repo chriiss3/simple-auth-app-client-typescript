@@ -1,10 +1,15 @@
-import { verifyAccessToken } from "../utils/utils";
-import { SELECTORS } from "../constants";
+import { verifyAccessToken } from "../utils";
+import { SELECTORS, PAGES } from "../constants";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
+import { api, showToast, redirectToPage } from "../utils";
+import { AxiosError } from "axios";
 
 const passwordInputs = document.querySelectorAll(SELECTORS.input) as NodeListOf<HTMLInputElement>;
 const eyeIcons = document.querySelectorAll(SELECTORS.eyeIcon) as NodeListOf<HTMLElement>;
 const eyeOffIcons = document.querySelectorAll(SELECTORS.eyeOffIcon) as NodeListOf<HTMLElement>;
+
+const logoutButton = document.querySelector(SELECTORS.logoutButton) as HTMLButtonElement;
+const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 
 const updatePasswordLink = document.querySelector(".update-password-link");
 const updatePassword = document.querySelector(".update-password");
@@ -24,7 +29,7 @@ const updateEmailArrowIcon = document.querySelector("#update-email-arrow-icon");
 const getUserData = async () => {
   const userName = document.querySelector(SELECTORS.userName) as HTMLElement;
 
-  const user = await verifyAccessToken(false);
+  const user = await verifyAccessToken(false, toastNotif);
 
   if (user) {
     userName.textContent = user.name;
@@ -32,6 +37,30 @@ const getUserData = async () => {
 };
 
 getUserData();
+
+const handleLogoutButton = () => {
+  const logout = async () => {
+    try {
+      const res = await api.post("/auth/logout");
+
+      showToast(toastNotif, res.data.message);
+
+      redirectToPage(PAGES.login);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (!err.response) {
+          showToast(toastNotif, "Ocurrio un error desconocido");
+  
+          return;
+        }
+      }
+    }
+  };
+
+  logout();
+};
+
+logoutButton.addEventListener("click", handleLogoutButton);
 
 updatePasswordLink?.addEventListener("click", () => {
   updatePassword?.classList.remove("hidden");
@@ -79,7 +108,7 @@ updateEmailArrowIcon?.addEventListener("click", () => {
   updateEmail?.classList.add("hidden");
 });
 
-passwordInputs.forEach((passwordInput, i) => {
-  eyeIcons[i].addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
-  eyeOffIcons[i].addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
+passwordInputs?.forEach((passwordInput, i) => {
+  eyeIcons[i]?.addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
+  eyeOffIcons[i]?.addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
 });

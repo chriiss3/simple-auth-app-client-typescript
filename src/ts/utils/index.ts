@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 
 import { API_URL } from "../config";
 import { CSS_CLASSES } from "../constants";
+import { UserTypes } from "../interfaces";
 
 const api = axios.create({
   baseURL: `${API_URL}/api`,
@@ -29,7 +30,7 @@ const redirectToPage = (page: string): void => {
   }, 3000);
 };
 
-const verifyAccessToken = async (redirect: boolean) => {
+const verifyAccessToken = async (redirect: boolean, toastNotif: HTMLElement): Promise<UserTypes | undefined> => {
   try {
     const res = await api.get("/user/user-data");
 
@@ -43,6 +44,12 @@ const verifyAccessToken = async (redirect: boolean) => {
   } catch (err) {
     if (err instanceof AxiosError) {
       const protectedPages = ["/home.html", "/settings.html"];
+
+      if (!err.response) {
+        showToast(toastNotif, "Ocurrio un error desconocido");
+
+        return;
+      }
 
       // Redirigit si se intenta acceder a paginas de protectedPages sin estar autenticado
       if (protectedPages.includes(window.location.pathname)) {

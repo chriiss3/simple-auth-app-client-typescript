@@ -81,198 +81,6 @@ const COLORS = {
 
 /***/ }),
 
-/***/ "./src/ts/utils/formValidations.ts":
-/*!*****************************************!*\
-  !*** ./src/ts/utils/formValidations.ts ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addFieldError: () => (/* binding */ addFieldError),
-/* harmony export */   addFormError: () => (/* binding */ addFormError),
-/* harmony export */   removeFieldError: () => (/* binding */ removeFieldError),
-/* harmony export */   removeFieldsError: () => (/* binding */ removeFieldsError),
-/* harmony export */   removeFormError: () => (/* binding */ removeFormError),
-/* harmony export */   removeFormErrors: () => (/* binding */ removeFormErrors),
-/* harmony export */   validateEmail: () => (/* binding */ validateEmail),
-/* harmony export */   validateField: () => (/* binding */ validateField),
-/* harmony export */   validateFields: () => (/* binding */ validateFields),
-/* harmony export */   validatePasswordLength: () => (/* binding */ validatePasswordLength),
-/* harmony export */   validatePasswordMatch: () => (/* binding */ validatePasswordMatch)
-/* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/ts/constants.ts");
-
-const validateEmail = (value, dataError, input, label) => {
-    const REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!REGEX.test(value)) {
-        addFormError(dataError, input, label, _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.invalidMail);
-        return true;
-    }
-    return false;
-};
-const validateFields = (labels, inputs, fieldsError) => {
-    let emptyInput = false;
-    inputs.forEach((input, i) => {
-        const inputElement = input;
-        if (inputElement.value === "") {
-            const label = labels[i];
-            const errorMessage = fieldsError[i];
-            addFieldError(errorMessage, inputElement, label);
-            emptyInput = true;
-        }
-        else {
-            const label = labels[i];
-            const errorMessage = fieldsError[i];
-            removeFieldError(errorMessage, inputElement, label);
-        }
-    });
-    return emptyInput;
-};
-const validatePasswordLength = (password, dataError, input, label) => {
-    if (password.length < 8) {
-        addFormError(dataError, input, label, _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.invalidPasswordLength);
-        return true;
-    }
-    return false;
-};
-const validatePasswordMatch = (password, confirmPassword, dataError, confirmPasswordInput, label) => {
-    if (password !== confirmPassword) {
-        addFormError(dataError, confirmPasswordInput, label, _constants__WEBPACK_IMPORTED_MODULE_0__.CLIENT_ERROR_MESSAGES.passwordNotMath);
-        return true;
-    }
-    return false;
-};
-const validateField = (inputValue, fieldError, input, label) => {
-    if (inputValue === "") {
-        addFieldError(fieldError, input, label);
-        return true;
-    }
-    return false;
-};
-const addFieldError = (fieldError, input, label) => {
-    fieldError.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-    label.style.color = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    input.style.outlineColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    input.style.borderColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-};
-const removeFieldsError = (fieldsError, inputs, labels) => {
-    inputs.forEach((input, index) => {
-        const label = labels[index];
-        const fieldError = fieldsError[index];
-        const inputElement = input;
-        fieldError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-        label.style.color = "";
-        inputElement.style.outlineColor = "";
-        inputElement.style.borderColor = "";
-    });
-};
-const removeFieldError = (fieldError, input, label) => {
-    fieldError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-    label.style.color = "";
-    input.style.outlineColor = "";
-    input.style.borderColor = "";
-};
-const addFormError = (dataError, input, label, message) => {
-    dataError.textContent = message;
-    dataError.classList.add(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-    label.style.color = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    input.style.outlineColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    input.style.borderColor = _constants__WEBPACK_IMPORTED_MODULE_0__.COLORS.red;
-    input.focus();
-};
-const removeFormErrors = (dataError, inputs, labels) => {
-    dataError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-    inputs.forEach((input, index) => {
-        const label = labels[index];
-        const inputElement = input;
-        label.style.color = "";
-        inputElement.style.outlineColor = "";
-        inputElement.style.borderColor = "";
-    });
-};
-const removeFormError = (dataError, input, label) => {
-    dataError.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_0__.CSS_CLASSES.visible);
-    label.style.color = "";
-    input.style.outlineColor = "";
-    input.style.borderColor = "";
-};
-
-
-
-/***/ }),
-
-/***/ "./src/ts/utils/index.ts":
-/*!*******************************!*\
-  !*** ./src/ts/utils/index.ts ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   api: () => (/* binding */ api),
-/* harmony export */   redirectToPage: () => (/* binding */ redirectToPage),
-/* harmony export */   showToast: () => (/* binding */ showToast),
-/* harmony export */   verifyAccessToken: () => (/* binding */ verifyAccessToken)
-/* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config */ "./src/ts/config.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/ts/constants.ts");
-
-
-
-const api = axios__WEBPACK_IMPORTED_MODULE_2__["default"].create({
-    baseURL: `${_config__WEBPACK_IMPORTED_MODULE_0__.API_URL}/api`,
-    headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
-        "Content-Type": "application/json",
-    },
-    withCredentials: true,
-});
-const showToast = (alertMessage, message) => {
-    alertMessage.textContent = message;
-    alertMessage.classList.add(_constants__WEBPACK_IMPORTED_MODULE_1__.CSS_CLASSES.visible);
-    setTimeout(() => {
-        alertMessage.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_1__.CSS_CLASSES.visible);
-    }, 3000);
-};
-const redirectToPage = (page) => {
-    setTimeout(() => {
-        window.location.href = `./${page}.html`;
-    }, 3000);
-};
-const verifyAccessToken = async (redirect, toastNotif) => {
-    try {
-        const res = await api.get("/user/user-data");
-        if (res) {
-            if (redirect) {
-                window.location.href = `./home.html`;
-            }
-        }
-        return res.data;
-    }
-    catch (err) {
-        if (err instanceof axios__WEBPACK_IMPORTED_MODULE_3__.AxiosError) {
-            const protectedPages = ["/home.html", "/settings.html"];
-            if (!err.response) {
-                showToast(toastNotif, "Ocurrio un error desconocido");
-                return;
-            }
-            // Redirigit si se intenta acceder a paginas de protectedPages sin estar autenticado
-            if (protectedPages.includes(window.location.pathname)) {
-                window.location.href = "./login.html";
-            }
-        }
-    }
-};
-
-
-
-/***/ }),
-
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -5128,63 +4936,73 @@ const asap = typeof queueMicrotask !== 'undefined' ?
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
 (() => {
-/*!****************************************!*\
-  !*** ./src/ts/pages/forgotPassword.ts ***!
-  \****************************************/
+/*!*******************************!*\
+  !*** ./src/ts/utils/index.ts ***!
+  \*******************************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   api: () => (/* binding */ api),
+/* harmony export */   redirectToPage: () => (/* binding */ redirectToPage),
+/* harmony export */   showToast: () => (/* binding */ showToast),
+/* harmony export */   verifyAccessToken: () => (/* binding */ verifyAccessToken)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./src/ts/utils/index.ts");
-/* harmony import */ var _utils_formValidations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/formValidations */ "./src/ts/utils/formValidations.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/ts/constants.ts");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config */ "./src/ts/config.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/ts/constants.ts");
 
 
 
-
-const toastNotif = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.toastNotif);
-const form = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.form);
-(0,_utils__WEBPACK_IMPORTED_MODULE_0__.verifyAccessToken)(true, toastNotif);
-const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const emailInput = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.emailInput);
-    const emailLabel = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.emailLabel);
-    const emailFieldError = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.fieldError);
-    const dataError = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.dataError);
-    const emailValue = emailInput.value.trim();
-    (0,_utils_formValidations__WEBPACK_IMPORTED_MODULE_1__.removeFieldError)(emailFieldError, emailInput, emailLabel);
-    (0,_utils_formValidations__WEBPACK_IMPORTED_MODULE_1__.removeFormError)(dataError, emailInput, emailLabel);
-    if ((0,_utils_formValidations__WEBPACK_IMPORTED_MODULE_1__.validateField)(emailValue, emailFieldError, emailInput, emailLabel))
-        return;
-    if ((0,_utils_formValidations__WEBPACK_IMPORTED_MODULE_1__.validateEmail)(emailValue, dataError, emailInput, emailLabel))
-        return;
-    const sendResetLink = async () => {
-        const submitButton = document.querySelector(_constants__WEBPACK_IMPORTED_MODULE_2__.SELECTORS.submitButton);
-        submitButton.classList.add(_constants__WEBPACK_IMPORTED_MODULE_2__.CSS_CLASSES.loading);
-        const formData = JSON.stringify({ email: emailValue });
-        try {
-            const res = await _utils__WEBPACK_IMPORTED_MODULE_0__.api.post("/auth/forgot-password", formData);
-            submitButton.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__.CSS_CLASSES.loading);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.showToast)(toastNotif, res.data.message);
-            emailInput.value = "";
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.redirectToPage)(_constants__WEBPACK_IMPORTED_MODULE_2__.PAGES.login);
-        }
-        catch (err) {
-            submitButton.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_2__.CSS_CLASSES.loading);
-            if (err instanceof axios__WEBPACK_IMPORTED_MODULE_3__.AxiosError) {
-                if (!err.response) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.showToast)(toastNotif, "Ocurrio un error desconocido");
-                    return;
-                }
-                const errorMessage = err.response.data.error;
-                (0,_utils_formValidations__WEBPACK_IMPORTED_MODULE_1__.addFormError)(dataError, emailInput, emailLabel, errorMessage);
+const api = axios__WEBPACK_IMPORTED_MODULE_2__["default"].create({
+    baseURL: `${_config__WEBPACK_IMPORTED_MODULE_0__.API_URL}/api`,
+    headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+        "Content-Type": "application/json",
+    },
+    withCredentials: true,
+});
+const showToast = (alertMessage, message) => {
+    alertMessage.textContent = message;
+    alertMessage.classList.add(_constants__WEBPACK_IMPORTED_MODULE_1__.CSS_CLASSES.visible);
+    setTimeout(() => {
+        alertMessage.classList.remove(_constants__WEBPACK_IMPORTED_MODULE_1__.CSS_CLASSES.visible);
+    }, 3000);
+};
+const redirectToPage = (page) => {
+    setTimeout(() => {
+        window.location.href = `./${page}.html`;
+    }, 3000);
+};
+const verifyAccessToken = async (redirect, toastNotif) => {
+    try {
+        const res = await api.get("/user/user-data");
+        if (res) {
+            if (redirect) {
+                window.location.href = `./home.html`;
             }
         }
-    };
-    sendResetLink();
+        return res.data;
+    }
+    catch (err) {
+        if (err instanceof axios__WEBPACK_IMPORTED_MODULE_3__.AxiosError) {
+            const protectedPages = ["/home.html", "/settings.html"];
+            if (!err.response) {
+                showToast(toastNotif, "Ocurrio un error desconocido");
+                return;
+            }
+            // Redirigit si se intenta acceder a paginas de protectedPages sin estar autenticado
+            if (protectedPages.includes(window.location.pathname)) {
+                window.location.href = "./login.html";
+            }
+        }
+    }
 };
-form.addEventListener("submit", handleFormSubmit);
+
 
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=forgotPassword.bundle.js.map
+//# sourceMappingURL=index.bundle.js.map

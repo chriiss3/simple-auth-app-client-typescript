@@ -1,7 +1,8 @@
 const CLIENT_ERROR_MESSAGES = {
   invalidMail: "Correo invalido.",
   requiredField: "Este campo es obligatorio.",
-  internetError: "No tienes conexion a internet",
+  unknownError: "Error desconocido",
+  networkError: "No hay conexion a internet",
   invalidPasswordLength: "Logitud de contraseña invalida.",
   passwordNotMath: "Las contraseñas no coinciden.",
   incorrectPassword: "Contraseña incorrecta.",
@@ -9,17 +10,18 @@ const CLIENT_ERROR_MESSAGES = {
 };
 
 const PAGES = {
+  forgotPassword: "forgot-password",
   home: "home",
   login: "login",
-  forgotPassword: "forgot-password",
+  register: "register",
+  resetPassword: "reset-password",
+  settings: "settings"
 };
 
 const CSS_CLASSES = {
   loading: "loading",
   visible: "visible",
 };
-
-const CLIENT_SUCCESS_MESSAGES = {};
 
 const SELECTORS = {
   newPasswordInput: "#new-password-input",
@@ -45,4 +47,4 @@ const COLORS = {
   red: "#9A0000",
 };
 
-export { CLIENT_ERROR_MESSAGES, PAGES, CSS_CLASSES, CLIENT_SUCCESS_MESSAGES, SELECTORS, COLORS };
+export { CLIENT_ERROR_MESSAGES, PAGES, CSS_CLASSES, SELECTORS, COLORS };

@@ -1,12 +1,12 @@
-import { api, showToast, redirectToPage } from "../utils/utils";
+import { api, showToast, redirectToPage, verifyAccessToken } from "../utils";
 import {
   validateFields,
-  confirmPasswordMatch,
+  validatePasswordMatch,
   validatePasswordLength,
   removeFieldsError,
-  showDataError,
-  removeDataError,
-} from "../utils/formValidation";
+  addFormError,
+  removeFormErrors,
+} from "../utils/formValidations";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
 
@@ -16,8 +16,10 @@ const passwordInputs = document.querySelectorAll(SELECTORS.input) as NodeListOf<
 const eyeIcons = document.querySelectorAll(SELECTORS.eyeIcon) as NodeListOf<HTMLElement>;
 const eyeOffIcons = document.querySelectorAll(SELECTORS.eyeOffIcon) as NodeListOf<HTMLElement>;
 const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
-
+const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 let token: string;
+
+verifyAccessToken(true, toastNotif)
 
 const getParamsToken = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -39,7 +41,6 @@ const handleFormSubmit = (event: Event) => {
   const inputs = document.querySelectorAll<HTMLInputElement>(SELECTORS.input);
   const newPasswordInput = document.querySelector(SELECTORS.newPasswordInput) as HTMLInputElement;
   const confirmNewPasswordInput = document.querySelector(SELECTORS.confirmNewPasswordInput) as HTMLInputElement;
-  const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
   const fieldsError = document.querySelectorAll(SELECTORS.fieldError) as NodeList;
   const dataError = document.querySelector(SELECTORS.dataError) as HTMLInputElement;
 
@@ -49,11 +50,11 @@ const handleFormSubmit = (event: Event) => {
   const confirmNewPasswordLabel = labels[1] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
-  removeDataError(dataError, inputs, labels);
+  removeFormErrors(dataError, inputs, labels);
 
   if (validateFields(labels, inputs, fieldsError)) return;
   if (
-    confirmPasswordMatch(
+    validatePasswordMatch(
       newPasswordValue,
       confirmNewPasswordValue,
       dataError,
@@ -94,12 +95,14 @@ const handleFormSubmit = (event: Event) => {
 
       if (err instanceof AxiosError) {
         if (!err.response) {
+          showToast(toastNotif, "Ocurrio un error desconocido");
+  
           return;
         }
 
         const errorMessage: string = err.response.data.error;
 
-        showDataError(dataError, newPasswordInput, newPasswordLabel, errorMessage);
+        addFormError(dataError, newPasswordInput, newPasswordLabel, errorMessage);
       }
     }
   };

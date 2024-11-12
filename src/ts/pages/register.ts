@@ -1,12 +1,12 @@
-import { api, showToast, redirectToPage, verifyAccessToken } from "../utils/utils";
+import { api, showToast, redirectToPage, verifyAccessToken } from "../utils";
 import {
   validateEmail,
   validateFields,
   removeFieldsError,
   validatePasswordLength,
-  showDataError,
-  removeDataError
-} from "../utils/formValidation";
+  addFormError,
+  removeFormErrors
+} from "../utils/formValidations";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
 import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
 
@@ -16,8 +16,10 @@ const passwordInput = document.querySelector(SELECTORS.passwordInput) as HTMLInp
 const eyeIcon = document.querySelector(SELECTORS.eyeIcon) as HTMLElement;
 const eyeOffIcon = document.querySelector(SELECTORS.eyeOffIcon) as HTMLElement;
 const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
+const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 
-verifyAccessToken(true);
+
+verifyAccessToken(true, toastNotif);
 
 const handleFormSubmit = (e: Event) => {
   e.preventDefault();
@@ -37,7 +39,7 @@ const handleFormSubmit = (e: Event) => {
   const passwordLabel = labels[2] as HTMLElement;
 
   removeFieldsError(fieldsError, inputs, labels);
-  removeDataError(dataError,inputs,labels )
+  removeFormErrors(dataError,inputs,labels )
 
   if (validateFields(labels, inputs, fieldsError)) return;
   if (validateEmail(emailValue, dataError, emailInput, emailLabel)) return;
@@ -45,7 +47,6 @@ const handleFormSubmit = (e: Event) => {
 
   const register = async () => {
     const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
-    const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
 
     submitButton.classList.add(CSS_CLASSES.loading);
 
@@ -68,11 +69,13 @@ const handleFormSubmit = (e: Event) => {
 
       if (err instanceof AxiosError) {
         if (!err.response) {
+          showToast(toastNotif, "Ocurrio un error desconocido");
+  
           return;
         }
 
         const errorMessage: string = err.response.data.error;
-        showDataError(dataError, emailInput, emailLabel, errorMessage);
+        addFormError(dataError, emailInput, emailLabel, errorMessage);
       }
     }
   };

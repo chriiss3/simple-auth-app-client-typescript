@@ -17,13 +17,13 @@
             <div class="field">
               <label for="name" class="label" id="name-label">Nombre</label>
               <input name="name" type="text" class="input" id="name-input" />
-              <div class="field-error">Este campo es obligatorio.</div>
+              <div class="field-error" id="name-field-error">Este campo es obligatorio.</div>
             </div>
 
             <div class="field">
               <label for="email" class="label" id="email-label">Correo electronico</label>
               <input name="email" type="text" class="input" id="email-input" />
-              <div class="field-error">Este campo es obligatorio.</div>
+              <div class="field-error" id="email-field-error">Este campo es obligatorio.</div>
             </div>
 
             <div class="field">
@@ -57,11 +57,11 @@
                   />
                 </svg>
               </div>
-              <div class="field-error">Este campo es obligatorio.</div>
+              <div class="field-error" id="password-field-error">Este campo es obligatorio.</div>
             </div>
           </div>
 
-          <div class="data-error"></div>
+          <div class="form-error"></div>
 
           <button type="submit" class="submit-button">Crear cuenta</button>
         </form>

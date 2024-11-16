@@ -1,10 +1,10 @@
-import { CSS_CLASSES, CLIENT_ERROR_MESSAGES, COLORS } from "../constants";
+import { CSS_CLASSES, ERROR_MESSAGES, COLORS } from "../constants";
 
-const validateEmail = (value: string, dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement): boolean => {
+const validateEmail = (value: string, formError: HTMLElement, input: HTMLInputElement, label: HTMLElement): boolean => {
   const REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!REGEX.test(value)) {
-    addFormError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidMail);
+    addFormError(formError, input, label, ERROR_MESSAGES.invalidMail);
 
     return true;
   }
@@ -38,12 +38,12 @@ const validateFields = (labels: NodeList, inputs: NodeList, fieldsError: NodeLis
 
 const validatePasswordLength = (
   password: string,
-  dataError: HTMLElement,
+  formError: HTMLElement,
   input: HTMLInputElement,
   label: HTMLElement
 ): boolean => {
   if (password.length < 8) {
-    addFormError(dataError, input, label, CLIENT_ERROR_MESSAGES.invalidPasswordLength);
+    addFormError(formError, input, label, ERROR_MESSAGES.invalidPasswordLength);
 
     return true;
   }
@@ -54,12 +54,12 @@ const validatePasswordLength = (
 const validatePasswordMatch = (
   password: string,
   confirmPassword: string,
-  dataError: HTMLElement,
+  formError: HTMLElement,
   confirmPasswordInput: HTMLInputElement,
   label: HTMLElement
 ): boolean => {
   if (password !== confirmPassword) {
-    addFormError(dataError, confirmPasswordInput, label, CLIENT_ERROR_MESSAGES.passwordNotMath);
+    addFormError(formError, confirmPasswordInput, label, ERROR_MESSAGES.passwordNotMath);
 
     return true;
   }
@@ -107,9 +107,9 @@ const removeFieldError = (fieldError: HTMLElement, input: HTMLInputElement, labe
   input.style.borderColor = "";
 };
 
-const addFormError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement, message: string): void => {
-  dataError.textContent = message;
-  dataError.classList.add(CSS_CLASSES.visible);
+const addFormError = (formError: HTMLElement, input: HTMLInputElement, label: HTMLElement, message: string): void => {
+  formError.textContent = message;
+  formError.classList.add(CSS_CLASSES.visible);
 
   label.style.color = COLORS.red;
   input.style.outlineColor = COLORS.red;
@@ -117,8 +117,8 @@ const addFormError = (dataError: HTMLElement, input: HTMLInputElement, label: HT
   input.focus();
 };
 
-const removeFormErrors = (dataError: HTMLElement, inputs: NodeList, labels: NodeList): void => {
-  dataError.classList.remove(CSS_CLASSES.visible);
+const removeFormErrors = (formError: HTMLElement, inputs: NodeList, labels: NodeList): void => {
+  formError.classList.remove(CSS_CLASSES.visible);
 
   inputs.forEach((input, index) => {
     const label = labels[index] as HTMLElement;
@@ -130,8 +130,8 @@ const removeFormErrors = (dataError: HTMLElement, inputs: NodeList, labels: Node
   });
 };
 
-const removeFormError = (dataError: HTMLElement, input: HTMLInputElement, label: HTMLElement): void => {
-  dataError.classList.remove(CSS_CLASSES.visible);
+const removeFormError = (formError: HTMLElement, input: HTMLInputElement, label: HTMLElement): void => {
+  formError.classList.remove(CSS_CLASSES.visible);
 
   label.style.color = "";
   input.style.outlineColor = "";

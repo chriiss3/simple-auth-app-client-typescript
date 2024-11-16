@@ -16,20 +16,41 @@ const languageOptions = {
   ecmaVersion: "latest",
   sourceType: "module",
   parser: babelParser,
+  parserOptions: {
+    requireConfigFile: false,
+  },
 };
 
-export default [
-  { files: ["src/**/*.ts"] },
-  {
-    plugins: {
-      ...pluginOptions,
-    },
+// export default [
+//   {
+//     languageOptions: {
+//       ...languageOptions,
+//     },
+//     plugins: {
+//       ...pluginOptions,
+//     },
+//     rules: {
+//       "@typescript-eslint/no-explicit-any": "off",
+//     },
+//     // files: ["src/**/*.ts"],
+//     // ignores: ["node_modules/**", "dist/**"]
+//   },
+
+//   eslint.configs.recommended,
+//   ...tseslint.configs.recommended,
+
+// ];
+
+export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.base, {
+  languageOptions: {
+    ...languageOptions,
   },
-  {
-    languageOptions: {
-      ...languageOptions,
-    },
+  plugins: {
+    ...pluginOptions,
   },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-];
+  // rules: {
+  //   "@typescript-eslint/no-explicit-any": "off",
+  // },
+  // files: ["src/**/*.ts"],
+  // ignores: ["node_modules/**", "dist/**"]
+});

@@ -1,114 +1,123 @@
-import { verifyAccessToken } from "../utils";
-import { SELECTORS, PAGES } from "../constants";
+import { SELECTORS, PAGES, ERROR_MESSAGES } from "../constants";
 import { handleEyeIcon, handleEyeOffIcon } from "../utils/togglePasswordVisibility";
-import { api, showToast, redirectToPage } from "../utils";
+import { api, showToast, redirectToPage, verifyDateMatch, getUser, verifyToken } from "../utils";
 import { AxiosError } from "axios";
 
-const passwordInputs = document.querySelectorAll(SELECTORS.input) as NodeListOf<HTMLInputElement>;
-const eyeIcons = document.querySelectorAll(SELECTORS.eyeIcon) as NodeListOf<HTMLElement>;
-const eyeOffIcons = document.querySelectorAll(SELECTORS.eyeOffIcon) as NodeListOf<HTMLElement>;
-
-const logoutButton = document.querySelector(SELECTORS.logoutButton) as HTMLButtonElement;
-const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
-
-const updatePasswordLink = document.querySelector(".update-password-link");
-const updatePassword = document.querySelector(".update-password");
-const updatePasswordArrowIcon = document.querySelector("#update-password-arrow-icon");
-
-const settingsLinks = document.querySelector(".settings-links");
-const settingsTitle = document.querySelector(".settings-title");
-
-const deleteAccountLink = document.querySelector(".delete-account-link");
-const deleteAccount = document.querySelector(".delete-account");
-const deleteAccountArrowIcon = document.querySelector("#delete-account-arrow-icon");
-
-const updateEmailLink = document.querySelector(".update-email-link");
-const updateEmail = document.querySelector(".update-email");
-const updateEmailArrowIcon = document.querySelector("#update-email-arrow-icon");
-
-const getUserData = async () => {
-  const userName = document.querySelector(SELECTORS.userName) as HTMLElement;
-
-  const user = await verifyAccessToken(false, toastNotif);
-
-  if (user) {
-    userName.textContent = user.name;
-  }
+const elements = {
+  settingsLinks: document.querySelector(".settings-links") as HTMLElement,
+  settingsTitle: document.querySelector(".settings-title") as HTMLElement,
+  updatePasswordLink: document.querySelector(".update-password-link") as HTMLLinkElement,
+  updatePassword: document.querySelector(".update-password") as HTMLElement,
+  updatePasswordArrowIcon: document.querySelector("#update-password-arrow-icon") as HTMLElement,
+  updateEmailLink: document.querySelector(".update-email-link") as HTMLLinkElement,
+  updateEmail: document.querySelector(".update-email") as HTMLElement,
+  updateEmailArrowIcon: document.querySelector("#update-email-arrow-icon") as HTMLElement,
+  deleteAccountLink: document.querySelector(".delete-account-link") as HTMLLinkElement,
+  deleteAccount: document.querySelector(".delete-account") as HTMLElement,
+  deleteAccountArrowIcon: document.querySelector("#delete-account-arrow-icon") as HTMLElement,
+  toastNotif: document.querySelector(SELECTORS.toastNotif) as HTMLElement,
+  passwordInputs: document.querySelectorAll(SELECTORS.input) as NodeListOf<HTMLInputElement>,
+  eyeIcons: document.querySelectorAll(SELECTORS.eyeIcon) as NodeListOf<HTMLElement>,
+  eyeOffIcons: document.querySelectorAll(SELECTORS.eyeOffIcon) as NodeListOf<HTMLElement>,
+  logoutButton: document.querySelector(SELECTORS.logoutButton) as HTMLButtonElement,
 };
-
-getUserData();
 
 const handleLogoutButton = () => {
   const logout = async () => {
     try {
       const res = await api.post("/auth/logout");
 
-      showToast(toastNotif, res.data.message);
-
+      showToast(elements.toastNotif, res.data.message);
       redirectToPage(PAGES.login);
     } catch (err) {
-      if (err instanceof AxiosError) {
-        if (!err.response) {
-          showToast(toastNotif, "Ocurrio un error desconocido");
-  
-          return;
-        }
-      }
+      handleLogoutError(err);
     }
   };
 
   logout();
 };
 
-logoutButton.addEventListener("click", handleLogoutButton);
+const handleLogoutError = (err: any) => {
+  if (err instanceof AxiosError) {
+    if (!err.response) {
+      showToast(elements.toastNotif, ERROR_MESSAGES.unknownError);
 
-updatePasswordLink?.addEventListener("click", () => {
-  updatePassword?.classList.remove("hidden");
+      return;
+    }
+  }
+};
 
-  settingsLinks?.classList.add("hidden");
-  settingsTitle?.classList.add("hidden");
+//
+
+elements.updatePasswordLink.addEventListener("click", () => {
+  elements.updatePassword.classList.remove("hidden");
+
+  elements.settingsLinks.classList.add("hidden");
+  elements.settingsTitle.classList.add("hidden");
 });
 
-updatePasswordArrowIcon?.addEventListener("click", () => {
-  settingsLinks?.classList.remove("hidden");
-  settingsTitle?.classList.remove("hidden");
+elements.updatePasswordArrowIcon.addEventListener("click", () => {
+  elements.settingsLinks.classList.remove("hidden");
+  elements.settingsTitle.classList.remove("hidden");
 
-  updatePassword?.classList.add("hidden");
+  elements.updatePassword.classList.add("hidden");
 });
 
 //
 
-deleteAccountLink?.addEventListener("click", () => {
-  deleteAccount?.classList.remove("hidden");
+elements.deleteAccountLink.addEventListener("click", () => {
+  elements.deleteAccount.classList.remove("hidden");
 
-  settingsLinks?.classList.add("hidden");
-  settingsTitle?.classList.add("hidden");
+  elements.settingsLinks.classList.add("hidden");
+  elements.settingsTitle.classList.add("hidden");
 });
 
-deleteAccountArrowIcon?.addEventListener("click", () => {
-  settingsLinks?.classList.remove("hidden");
-  settingsTitle?.classList.remove("hidden");
+elements.deleteAccountArrowIcon.addEventListener("click", () => {
+  elements.settingsLinks.classList.remove("hidden");
+  elements.settingsTitle.classList.remove("hidden");
 
-  deleteAccount?.classList.add("hidden");
+  elements.deleteAccount.classList.add("hidden");
 });
 
 //
 
-updateEmailLink?.addEventListener("click", () => {
-  updateEmail?.classList.remove("hidden");
+elements.updateEmailLink.addEventListener("click", () => {
+  elements.updateEmail.classList.remove("hidden");
 
-  settingsLinks?.classList.add("hidden");
-  settingsTitle?.classList.add("hidden");
+  elements.settingsLinks.classList.add("hidden");
+  elements.settingsTitle.classList.add("hidden");
 });
 
-updateEmailArrowIcon?.addEventListener("click", () => {
-  settingsLinks?.classList.remove("hidden");
-  settingsTitle?.classList.remove("hidden");
+elements.updateEmailArrowIcon.addEventListener("click", () => {
+  elements.settingsLinks.classList.remove("hidden");
+  elements.settingsTitle.classList.remove("hidden");
 
-  updateEmail?.classList.add("hidden");
+  elements.updateEmail.classList.add("hidden");
 });
 
-passwordInputs?.forEach((passwordInput, i) => {
-  eyeIcons[i]?.addEventListener("click", () => handleEyeIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
-  eyeOffIcons[i]?.addEventListener("click", () => handleEyeOffIcon(passwordInput, eyeIcons[i], eyeOffIcons[i]));
+elements.passwordInputs.forEach((passwordInput, i) => {
+  elements.eyeIcons[i]?.addEventListener("click", () =>
+    handleEyeIcon(passwordInput, elements.eyeIcons[i], elements.eyeOffIcons[i])
+  );
+  elements.eyeOffIcons[i]?.addEventListener("click", () =>
+    handleEyeOffIcon(passwordInput, elements.eyeIcons[i], elements.eyeOffIcons[i])
+  );
 });
+
+const onLoadPage = async () => {
+  await verifyDateMatch(undefined, elements.toastNotif); // Asegurar que verifyToken() reciba el token correcto y no uno expirado.
+  await verifyToken(false, elements.toastNotif); // Verificar el token mas reciente de las cookies.
+  const user = await getUser(elements.toastNotif);
+
+  if (user) {
+    const userFullName = document.querySelector(SELECTORS.fullName) as HTMLElement;
+    userFullName.textContent = user.name;
+  }
+
+  let intervalId: any;
+  intervalId = setInterval(() => verifyDateMatch(intervalId, elements.toastNotif), 1000);
+};
+
+onLoadPage();
+
+elements.logoutButton.addEventListener("click", handleLogoutButton);

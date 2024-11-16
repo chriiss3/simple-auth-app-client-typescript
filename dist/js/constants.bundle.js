@@ -79,7 +79,7 @@ const SELECTORS = {
     emailLabel: "#email-label",
     emailInput: "#email-input",
     passwordInput: "#password-input",
-    dataError: ".data-error",
+    dataError: ".form-error",
     fieldError: ".field-error",
     submitButton: ".submit-button",
     form: ".form",

@@ -1,6 +1,5 @@
 import { AxiosError } from "axios";
-
-import { api, showToast, redirectToPage, verifyAccessToken } from "../utils";
+import { api, showToast, redirectToPage, verifyToken, verifyDateMatch } from "../utils";
 import {
   validateEmail,
   validateField,
@@ -8,61 +7,74 @@ import {
   removeFieldError,
   removeFormError,
 } from "../utils/formValidations";
-import { CSS_CLASSES, PAGES, SELECTORS } from "../constants";
+import { ERROR_MESSAGES, CSS_CLASSES, PAGES, SELECTORS } from "../constants";
 
-const toastNotif = document.querySelector(SELECTORS.toastNotif) as HTMLElement;
-const form = document.querySelector(SELECTORS.form) as HTMLFormElement;
-
-verifyAccessToken(true, toastNotif);
+const elements = {
+  emailLabel: document.querySelector("#email-label") as HTMLElement,
+  emailInput: document.querySelector(SELECTORS.emailInput) as HTMLInputElement,
+  emailFieldError: document.querySelector("#email-field-error") as HTMLElement,
+  toastNotif: document.querySelector(SELECTORS.toastNotif) as HTMLElement,
+  form: document.querySelector(SELECTORS.form) as HTMLFormElement,
+  formError: document.querySelector(SELECTORS.formError) as HTMLElement,
+  submitButton: document.querySelector(SELECTORS.submitButton) as HTMLButtonElement,
+};
 
 const handleFormSubmit = (event: Event) => {
   event.preventDefault();
 
-  const emailInput = document.querySelector(SELECTORS.emailInput) as HTMLInputElement;
-  const emailLabel = document.querySelector(SELECTORS.emailLabel) as HTMLInputElement;
-  const emailFieldError = document.querySelector(SELECTORS.fieldError) as HTMLElement;
-  const dataError = document.querySelector(SELECTORS.dataError) as HTMLInputElement;
-  const emailValue = emailInput.value.trim();
+  const emailInputValue = elements.emailInput.value.trim() || "";
 
-  removeFieldError(emailFieldError, emailInput, emailLabel);
-  removeFormError(dataError, emailInput, emailLabel)
+  //
+  removeFieldError(elements.emailFieldError, elements.emailInput, elements.emailLabel);
+  removeFormError(elements.formError, elements.emailInput, elements.emailLabel);
 
-  if (validateField(emailValue, emailFieldError, emailInput, emailLabel)) return;
-  if (validateEmail(emailValue, dataError, emailInput, emailLabel)) return;
+  //
+  if (validateField(emailInputValue, elements.emailFieldError, elements.emailInput, elements.emailLabel)) return;
+  if (validateEmail(emailInputValue, elements.formError, elements.emailInput, elements.emailLabel)) return;
 
-  const sendResetLink = async () => {
-    const submitButton = document.querySelector(SELECTORS.submitButton) as HTMLButtonElement;
-    submitButton.classList.add(CSS_CLASSES.loading);
-
-    const formData = JSON.stringify({ email: emailValue });
-
-    try {
-      const res = await api.post("/auth/forgot-password", formData);
-
-      submitButton.classList.remove(CSS_CLASSES.loading);
-
-      showToast(toastNotif, res.data.message);
-
-      emailInput.value = "";
-
-      redirectToPage(PAGES.login);
-    } catch (err) {
-      submitButton.classList.remove(CSS_CLASSES.loading);
-
-      if (err instanceof AxiosError) {
-        if (!err.response) {
-          showToast(toastNotif, "Ocurrio un error desconocido");
-  
-          return;
-        }
-
-        const errorMessage: string = err.response.data.error;
-        addFormError(dataError, emailInput, emailLabel, errorMessage);
-      }
-    }
-  };
-
-  sendResetLink();
+  sendLink(emailInputValue);
 };
 
-form.addEventListener("submit", handleFormSubmit);
+const sendLink = async (emailInputValue: string) => {
+  elements.submitButton.classList.add(CSS_CLASSES.loading);
+
+  const formData = JSON.stringify({ email: emailInputValue });
+
+  try {
+    const res = await api.post("/auth/forgotPassword", formData);
+
+    elements.submitButton.classList.remove(CSS_CLASSES.loading);
+    showToast(elements.toastNotif, res.data.message);
+    elements.emailInput.value = "";
+    redirectToPage(PAGES.login);
+  } catch (err) {
+    handleSendLinkError(err);
+  }
+};
+
+const handleSendLinkError = (err: any) => {
+  elements.submitButton.classList.remove(CSS_CLASSES.loading);
+
+  if (!err.response) {
+    showToast(elements.toastNotif, ERROR_MESSAGES.unknownError);
+    return;
+  }
+
+  if (err instanceof AxiosError && err.response) {
+    const errorMessage: string = err.response.data.error;
+    addFormError(elements.formError, elements.emailInput, elements.emailLabel, errorMessage);
+  }
+};
+
+const onLoadPage = async () => {
+  await verifyDateMatch(undefined, elements.toastNotif);
+  await verifyToken(true, elements.toastNotif);
+
+  let intervalId: any;
+  intervalId = setInterval(() => verifyDateMatch(intervalId, elements.toastNotif), 1000);
+};
+
+onLoadPage();
+// await onLoadPage();
+
+elements.form.addEventListener("submit", handleFormSubmit);

@@ -1,8 +1,7 @@
-const CLIENT_ERROR_MESSAGES = {
+const ERROR_MESSAGES = {
   invalidMail: "Correo invalido.",
   requiredField: "Este campo es obligatorio.",
   unknownError: "Error desconocido",
-  networkError: "No hay conexion a internet",
   invalidPasswordLength: "Logitud de contraseña invalida.",
   passwordNotMath: "Las contraseñas no coinciden.",
   incorrectPassword: "Contraseña incorrecta.",
@@ -24,18 +23,25 @@ const CSS_CLASSES = {
 };
 
 const SELECTORS = {
-  newPasswordInput: "#new-password-input",
-  confirmNewPasswordInput: "#confirm-new-password-input",
+  nameLabel: "#name-label",
   nameInput: "#name-input",
+  nameFieldError: "#name-field-error",
+  emailLabel: "#email-label",
+  emailInput: "#email-input",
+  emailFieldError: "#email-field-error",
+  passwordLabel: "#password-label",
+  passwordInput: "#password-input",
+  passowrdFieldError: "#password-field-error",
+  newPasswordLabel: "",
+  newPasswordInput: "#new-password-input",
+  confirmNewPasswordLabel: "",
+  confirmNewPasswordInput: "#confirm-new-password-input",
   logoutButton: ".logout-button",
-  userName: ".user-name",
+  fullName: ".full-name",
   label: ".label",
   input: ".input",
   toastNotif: ".toast-notif",
-  emailLabel: "#email-label",
-  emailInput: "#email-input",
-  passwordInput: "#password-input",
-  dataError: ".data-error",
+  formError: ".form-error",
   fieldError: ".field-error",
   submitButton: ".submit-button",
   form: ".form",
@@ -47,4 +53,4 @@ const COLORS = {
   red: "#9A0000",
 };
 
-export { CLIENT_ERROR_MESSAGES, PAGES, CSS_CLASSES, SELECTORS, COLORS };
+export { ERROR_MESSAGES, PAGES, CSS_CLASSES, SELECTORS, COLORS };

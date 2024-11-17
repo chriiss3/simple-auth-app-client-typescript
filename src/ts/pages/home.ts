@@ -17,28 +17,20 @@ const elements = {
   logoutButton: document.querySelector(SELECTORS.logoutButton) as HTMLButtonElement,
 };
 
-let intervalId: any;
+const logout = async () => {
+  const backupToken = localStorage.getItem("backupToken") as string;
 
-verifyDateMatch(intervalId, elements.toastNotif);
+  try {
+    const res = await api.post("/auth/logout", JSON.stringify({ backupToken }));
 
-const handleLogoutButton = () => {
-  const logout = async () => {
-    const backupToken = localStorage.getItem("backupToken") as string;
+    localStorage.setItem("newTokenRequestDate", "");
+    localStorage.setItem("backupToken", "");
 
-    try {
-      const res = await api.post("/auth/logout", JSON.stringify({ backupToken }));
-
-      localStorage.setItem("newTokenRequestDate", "");
-      localStorage.setItem("backupToken", "");
-
-      showToast(elements.toastNotif, res.data.message);
-      redirectToPage(PAGES.login);
-    } catch (err) {
-      handleLogoutError(err);
-    }
-  };
-
-  logout();
+    showToast(elements.toastNotif, res.data.message);
+    redirectToPage(PAGES.login);
+  } catch (err) {
+    handleLogoutError(err);
+  }
 };
 
 const handleLogoutError = (err: any) => {
@@ -53,7 +45,7 @@ const handleLogoutError = (err: any) => {
 
 const onLoadPage = async () => {
   await verifyDateMatch(undefined, elements.toastNotif);
-  await verifyToken(false, elements.toastNotif); 
+  await verifyToken(false, elements.toastNotif);
   const user = await getUser(elements.toastNotif);
 
   if (user) {
@@ -67,4 +59,6 @@ const onLoadPage = async () => {
 
 onLoadPage();
 
-elements.logoutButton.addEventListener("click", handleLogoutButton);
+elements.logoutButton.addEventListener("click", async () => {
+  await logout();
+});

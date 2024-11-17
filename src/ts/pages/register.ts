@@ -32,10 +32,6 @@ const elements = {
   submitButton: document.querySelector(SELECTORS.submitButton) as HTMLButtonElement,
 };
 
-let intervalId: any;
-
-verifyDateMatch(intervalId, elements.toastNotif);
-
 const handleFormSubmit = (event: Event) => {
   event.preventDefault();
 
@@ -74,11 +70,11 @@ const register = async (nameInputValue: string, emailInputValue: string, passwor
 
     redirectToPage(PAGES.home);
   } catch (err) {
-    handleRegisterError(err, elements.emailLabel);
+    handleRegisterError(err);
   }
 };
 
-const handleRegisterError = (err: any, emailLabel: HTMLElement) => {
+const handleRegisterError = (err: any) => {
   elements.submitButton.classList.remove(CSS_CLASSES.loading);
 
   if (!err.response) {
@@ -95,7 +91,7 @@ const handleRegisterError = (err: any, emailLabel: HTMLElement) => {
     }
 
     const errorMessage: string = err.response.data.error;
-    addFormError(elements.formError, elements.emailInput, emailLabel, errorMessage);
+    addFormError(elements.formError, elements.emailInput, elements.emailLabel, errorMessage);
   }
 };
 

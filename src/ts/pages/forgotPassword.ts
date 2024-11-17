@@ -75,6 +75,5 @@ const onLoadPage = async () => {
 };
 
 onLoadPage();
-// await onLoadPage();
 
 elements.form.addEventListener("submit", handleFormSubmit);

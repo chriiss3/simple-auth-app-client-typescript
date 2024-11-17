@@ -43,9 +43,6 @@ const elements = {
 };
 
 let token: string;
-let intervalId: any;
-
-verifyDateMatch(intervalId, elements.toastNotif);
 
 const getParamsToken = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -58,7 +55,7 @@ const getParamsToken = () => {
   }
 };
 
-// getParamsToken();
+getParamsToken();
 
 const handleFormSubmit = (event: Event) => {
   event.preventDefault();

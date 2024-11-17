@@ -5,7 +5,7 @@ import { CSS_CLASSES, ERROR_MESSAGES } from "../constants";
 import { UserTypes } from "../interfaces";
 
 const api = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: `${API_URL}/api/v1`,
   headers: {
     "Cache-Control": "no-cache, no-store, must-revalidate",
     Pragma: "no-cache",

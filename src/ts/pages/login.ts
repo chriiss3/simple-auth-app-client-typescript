@@ -44,15 +44,10 @@ const handleFormSubmit = (event: Event) => {
     return;
   }
 
-  login(emailInputValue, passwordInputValue, elements.emailLabel, elements.passwordLabel);
+  login(emailInputValue, passwordInputValue);
 };
 
-const login = async (
-  email: string,
-  password: string,
-  emailLabel: HTMLElement,
-  passwordLabel: HTMLElement
-): Promise<void> => {
+const login = async (email: string, password: string): Promise<void> => {
   elements.submitButton.classList.add(CSS_CLASSES.loading);
 
   try {
@@ -72,11 +67,11 @@ const login = async (
 
     redirectToPage(PAGES.home);
   } catch (err) {
-    handleLoginError(err, emailLabel, passwordLabel);
+    handleLoginError(err);
   }
 };
 
-const handleLoginError = (err: any, emailLabel: HTMLElement, passwordLabel: HTMLElement) => {
+const handleLoginError = (err: any) => {
   elements.submitButton.classList.remove(CSS_CLASSES.loading);
 
   if (!err.response) {
@@ -89,9 +84,9 @@ const handleLoginError = (err: any, emailLabel: HTMLElement, passwordLabel: HTML
     const errorMessage = err.response.data.error;
 
     if (errorMessage === ERROR_MESSAGES.accountNotFound) {
-      addFormError(elements.formError, elements.emailInput, emailLabel, errorMessage);
+      addFormError(elements.formError, elements.emailInput, elements.emailLabel, errorMessage);
     } else if (errorMessage === ERROR_MESSAGES.incorrectPassword) {
-      addFormError(elements.formError, elements.passwordInput, passwordLabel, errorMessage);
+      addFormError(elements.formError, elements.passwordInput, elements.passwordLabel, errorMessage);
     }
   }
 };

@@ -22,19 +22,20 @@ const elements = {
   logoutButton: document.querySelector(SELECTORS.logoutButton) as HTMLButtonElement,
 };
 
-const handleLogoutButton = () => {
-  const logout = async () => {
-    try {
-      const res = await api.post("/auth/logout");
+const logout = async () => {
+  const backupToken = localStorage.getItem("backupToken") as string;
 
-      showToast(elements.toastNotif, res.data.message);
-      redirectToPage(PAGES.login);
-    } catch (err) {
-      handleLogoutError(err);
-    }
-  };
+  try {
+    const res = await api.post("/auth/logout", JSON.stringify({ backupToken }));
 
-  logout();
+    localStorage.setItem("newTokenRequestDate", "");
+    localStorage.setItem("backupToken", "");
+
+    showToast(elements.toastNotif, res.data.message);
+    redirectToPage(PAGES.login);
+  } catch (err) {
+    handleLogoutError(err);
+  }
 };
 
 const handleLogoutError = (err: any) => {
@@ -105,8 +106,8 @@ elements.passwordInputs.forEach((passwordInput, i) => {
 });
 
 const onLoadPage = async () => {
-  await verifyDateMatch(undefined, elements.toastNotif); // Asegurar que verifyToken() reciba el token correcto y no uno expirado.
-  await verifyToken(false, elements.toastNotif); // Verificar el token mas reciente de las cookies.
+  await verifyDateMatch(undefined, elements.toastNotif);
+  await verifyToken(false, elements.toastNotif);
   const user = await getUser(elements.toastNotif);
 
   if (user) {
@@ -120,4 +121,6 @@ const onLoadPage = async () => {
 
 onLoadPage();
 
-elements.logoutButton.addEventListener("click", handleLogoutButton);
+elements.logoutButton.addEventListener("click", async () => {
+  await logout();
+});
